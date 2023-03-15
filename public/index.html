@@ -18,11 +18,11 @@
     ></script>
     <link rel="stylesheet" href="./main.css" />
 
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
     <link
-      href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css"
+      href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css"
       rel="stylesheet"
     />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
   </head>
   <body>
     <div class="flex justify-between items-center p-4 measure">
@@ -35,7 +35,7 @@
       <h1 class="text-2xl font-bold">SOCC Night Walk</h1>
       <button
         type="button"
-        class="text-black aspect-square rounded-full text-center focus:outline-blue-500 focus:outline-2 focus:outline text-xl"
+        class="text-black aspect-square rounded-full text-center hover:cursor-pointer text-xl"
         data-toggle="modal"
         data-target="#scanQR"
       >
@@ -56,12 +56,22 @@
             <tr>
               <td>SoC</td>
               <td>1000</td>
-              <td><img src="./img/SOCC.png" class="w-full aspect-square" /></td>
+              <td class="p-5">
+                <img
+                  src="./img/SOCC.png"
+                  class="w-full aspect-square max-h-[100px]"
+                />
+              </td>
             </tr>
             <tr>
               <td>EEE</td>
               <td>1000</td>
-              <td><img src="./img/SOCC.png" class="w-full aspect-square" /></td>
+              <td class="p-5">
+                <img
+                  src="./img/SOCC.png"
+                  class="w-full aspect-square max-h-[100px]"
+                />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -71,7 +81,7 @@
 
     <!-- scanQR -->
     <div
-      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade"
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
       id="scanQR"
       tabindex="-1"
       role="dialog"
@@ -135,7 +145,7 @@
       const map = new mapboxgl.Map({
         container: "map",
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: "mapbox://styles/mapbox/streets-v12",
+        style: "mapbox://styles/mapbox/satellite-streets-v12",
         zoom: 18,
       });
       map.on("load", () => {
@@ -145,8 +155,24 @@
         // map["touchZoomRotate"].disable();
         map["doubleClickZoom"].disable();
         map["boxZoom"].disable();
+        map.addLayer({
+          id: "portland",
+          source: "portland",
+          type: "raster",
+        });
       });
-
+      // Add geolocate control to the map.
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          // When active the map will receive updates to the device's location as it changes.
+          trackUserLocation: true,
+          // Draw an arrow next to the location dot to indicate which direction the device is heading.
+          showUserHeading: true,
+        })
+      );
       navigator.geolocation.watchPosition(
         function (position) {
           var lat = position.coords.latitude;
@@ -195,6 +221,7 @@
 
       function setResult(result) {
         console.log(result.data);
+        alert(result.data);
       }
 
       // ####### Web Cam Scanning #######
