@@ -1,12 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SOCC Night Walk</title>
-</head>
-<body>
-  Hi This is a test
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./img/SOCC.png" />
+    <title>SOCC Night Walk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://kit.fontawesome.com/825a35d965.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./main.css" />
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="flex justify-between items-center p-4 measure">
+      <button
+        type="button"
+        class="text-black aspect-square rounded-full text-center focus:outline-blue-500 focus:outline-2 focus:outline text-xl opacity-0"
+      >
+        <i class="bi bi-qr-code"></i>
+      </button>
+      <h1 class="text-2xl font-bold">SOCC Night Walk</h1>
+      <button
+        type="button"
+        class="text-black aspect-square rounded-full text-center focus:outline-blue-500 focus:outline-2 focus:outline text-xl"
+        data-toggle="modal"
+        data-target="#scanQR"
+      >
+        <i class="bi bi-qr-code"></i>
+      </button>
+    </div>
+    <div id="main" class="p-4 flex flex-col justify-between">
+      <div id="table" class="w-full">
+        <table class="mx-auto table-auto text-center">
+          <thead>
+            <tr>
+              <th class="w-1/2">Station</th>
+              <th class="w-1/3">Time</th>
+              <th class="w-1/6 min-w-[100px]">Stamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SoC</td>
+              <td>1000</td>
+              <td><img src="./img/SOCC.png" class="w-full aspect-square" /></td>
+            </tr>
+            <tr>
+              <td>EEE</td>
+              <td>1000</td>
+              <td><img src="./img/SOCC.png" class="w-full aspect-square" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="map" class="w-full h-1/2"></div>
+    </div>
+
+    <!-- scanQR -->
+    <div
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade"
+      id="scanQR"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div
+        class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
+        role="document"
+      >
+        <div
+          class="relative flex flex-col mx-auto pointer-events-auto bg-white border border-gray-300 rounded-lg"
+        >
+          <div
+            class="flex items-start justify-end p-4 border-gray-300 rounded-t"
+          >
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="relative flex px-4 flex-col pb-4 gap-2">
+            <div id="video-container" class="aspect-[4/3]">
+              <video id="qr-video" class="w-full h-full object-cover"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function getAbsoluteHeight(el) {
+        // Get the DOM Node if you pass in a string
+        el = typeof el === "string" ? document.querySelector(el) : el;
+
+        var styles = window.getComputedStyle(el);
+        var margin =
+          parseFloat(styles["marginTop"]) + parseFloat(styles["marginBottom"]);
+
+        return Math.ceil(el.offsetHeight + margin);
+      }
+      var heightSum = 0;
+      for (var ele of document.querySelectorAll(".measure")) {
+        heightSum += getAbsoluteHeight(ele);
+      }
+      document.getElementById("main").style.height =
+        getAbsoluteHeight(document.body) - heightSum + `px`;
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+    <!--Login Check-->
+    <script></script>
+    <!--Map-->
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoidWx0cmFyYXB0b3IiLCJhIjoiY2t0cGo5aThxMGFxMzJybXBiNmZ3bWY4eSJ9.q24IUWxYYm6DhTDn5pY2Rg";
+      const map = new mapboxgl.Map({
+        container: "map",
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: "mapbox://styles/mapbox/streets-v12",
+        zoom: 18,
+      });
+      map.on("load", () => {
+        map["scrollZoom"].disable();
+        // map["dragPan"].disable();
+        // map["dragRotate"].disable();
+        // map["touchZoomRotate"].disable();
+        map["doubleClickZoom"].disable();
+        map["boxZoom"].disable();
+      });
+
+      navigator.geolocation.watchPosition(
+        function (position) {
+          var lat = position.coords.latitude;
+          var lng = position.coords.longitude;
+          var heading = position.coords.heading;
+          var speed = position.coords.speed; // Metre per Second
+          var accuracy = position.coords.accuracy;
+          // Update the map's view to center on the user's location
+          map.setCenter([lng, lat]);
+
+          // Display the user's location and direction on the map
+          const player = document.createElement("div");
+          player.style.backgroundImage = `url(https://media.discordapp.net/attachments/910885868733087747/1068527441720647840/image-removebg-preview.png)`;
+          player.id = `playerChar`;
+          player.style.minWidth = `10px`;
+          player.style.maxWidth = `50px`;
+          player.style.width = `10vw`;
+          player.style.aspectRatio = `1`;
+          player.style.backgroundSize = `100%`;
+          player.style.zIndex = `99`;
+          if (document.querySelectorAll("#playerChar").length >= 1) {
+            document.querySelectorAll("#playerChar")[0].remove();
+          }
+          var marker = new mapboxgl.Marker(player, { anchor: "bottom" })
+            .setLngLat([lng, lat])
+            .addTo(map);
+          marker.setRotation(heading);
+          map.setBearing(heading);
+        },
+        (err) => {
+          console.error(`ERROR(${err.code}): ${err.message}`);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+    </script>
+    <!--QR Reader-->
+    <script type="module">
+      import QrScanner from "./js/qr-scanner.min.js";
+
+      const video = document.getElementById("qr-video");
+      const videoContainer = document.getElementById("video-container");
+
+      function setResult(result) {
+        console.log(result.data);
+      }
+
+      // ####### Web Cam Scanning #######
+
+      const scanner = new QrScanner(video, (result) => setResult(result), {
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+      });
+
+      window.scanner = scanner;
+
+      $("#scanQR").on("shown.bs.modal", function (e) {
+        scanner.start();
+      });
+    </script>
+  </body>
 </html>
