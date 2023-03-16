@@ -70,6 +70,12 @@
           })
           .then((response) => {
             localStorage.setItem("userData", JSON.stringify(response.data[0]));
+            if (response.data[0].SOCC) {
+              localStorage.setItem(
+                "colorDict",
+                JSON.stringify(JSON.parse(response.data[0].SOCC))
+              );
+            }
             window.location.href = "/";
           })
           .catch((error) => {

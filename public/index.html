@@ -136,6 +136,7 @@
       integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--Login Check-->
     <script>
       if (localStorage.getItem("userData") == undefined) {
@@ -295,16 +296,24 @@
           "7497e88b8c64062edfb2f30b9c5f845552b841d1fbae97ab3f224f74",
           "5b1cfa35e55802f5bcd92750b9f1441d63ddeabba543f9f7d87d8fb3",
         ];
-        console.log(colorArr.length);
-        console.log(urlArr.length);
         shuffleArr(colorArr);
         shuffleArr(urlArr);
         var colorDict = {};
         for (var index in urlArr) {
           colorDict[urlArr[index]] = colorArr[index];
         }
-        console.log(colorDict);
-        localStorage.setItem("colorDict", JSON.stringify(colorDict));
+        axios
+          .post("./update", {
+            links: colorDict,
+            userID: JSON.parse(localStorage.getItem("userData")).id,
+          })
+          .then((response) => {
+            localStorage.setItem("colorDict", JSON.stringify(colorDict));
+            localStorage.setItem("userData", JSON.stringify(response.data[0]));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
       function shuffleArr(array) {
         let currentIndex = array.length,
