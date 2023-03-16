@@ -38,7 +38,7 @@ for link in urlArr:
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
 
     # Add the text data to the QR code instance
-    qr.add_data(link)
+    qr.add_data(f"https://focnightwalk.onrender.com/qr/{link}")
 
     # Generate the QR code
     qr.make(fit=True)
