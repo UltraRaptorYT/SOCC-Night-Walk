@@ -16,7 +16,20 @@
       src="https://kit.fontawesome.com/825a35d965.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="./main.css" />
+    <style>
+      body {
+        height: 100dvh;
+      }
+
+      .height {
+        height: 100dvh;
+      }
+
+      .circle {
+        width: 30px;
+        height: 30px;
+      }
+    </style>
     <link rel="stylesheet" href="./login.css" />
   </head>
   <body class="bg-black text-white max-w-[500px] mx-auto">
@@ -26,7 +39,7 @@
         class="flex flex-col items-center gap-5 w-full h-full justify-center"
       >
         <h1 class="text-2xl font-bold">Login</h1>
-        <div>
+        <div class="w-3/4 mx-auto">
           <label class="block text-gray-300 text-sm font-bold mb-2" for="email">
             Email
           </label>
@@ -39,7 +52,7 @@
             required
           />
         </div>
-        <div class="flex flex-col w-full items-center">
+        <div class="flex flex-col w-3/4 mx-auto items-center">
           <div id="err" class="text-red-500 text-sm mb-2">&nbsp;</div>
           <a
             href="./signup"
