@@ -73,6 +73,15 @@ app.post("/signup", async (req, res) => {
     }
     return res.status(500).json(error);
   }
+  const SOCCQR = await supabase.from("SOCCQR").insert({
+    userid: data[0].id,
+    qr: JSON.stringify({
+      R: 0,
+      Y: 0,
+      G: 0,
+      B: 0,
+    }),
+  });
   return res.status(201).json(data);
 });
 
@@ -134,6 +143,31 @@ var urlArr = [
   "06b38eae6e3def5ec4a663099b86e22fe95577e00af55ff931e9e6b6",
   "d95819df3ba623fec705baf34f0f33b1c7bd366e5ed595d2dc1eb972",
 ];
+
+app.get("/:userID/SOCC", async (req, res) => {
+  var userID = req.params.userID;
+  const { data, error } = await supabase
+    .from("SOCCQR")
+    .select("qr")
+    .eq("userid", userID);
+  if (error) {
+    return res.status(500).json(error);
+  }
+  return res.status(200).json(data[0]);
+});
+
+app.post("/:userID/SOCC", async (req, res) => {
+  var userID = req.params.userID;
+  const { data, error } = await supabase
+    .from("SOCCQR")
+    .update({ qr: req.body.qr })
+    .eq("userid", userID)
+    .select();
+  if (error) {
+    return res.status(500).json(error);
+  }
+  return res.status(200).json(data[0]);
+});
 
 app.get("/:progress/:code", async (req, res) => {
   return res.sendFile("/index.html", { root: __dirname + "/public" });

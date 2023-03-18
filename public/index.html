@@ -29,6 +29,62 @@
         width: 30px;
         height: 30px;
       }
+
+      .marquee {
+        --gap: 0rem;
+        position: relative;
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        gap: var(--gap);
+      }
+
+      .marquee__content {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        gap: var(--gap);
+        min-width: 100%;
+        animation: scroll 4s linear infinite;
+      }
+
+      .stop {
+        animation: scrollTrans 2s ease-out 1 !important;
+      }
+
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(calc(-100% - var(--gap)));
+        }
+      }
+
+      @keyframes scrollTrans {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(calc(-100% - var(--gap)));
+        }
+      }
+
+      #pointer {
+        position: relative;
+      }
+
+      #pointer::before {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 15px;
+        background-color: pink;
+        left: 50%;
+        transform: translate(-50%, 3px);
+        z-index: 1006;
+        border: 1px solid black;
+      }
     </style>
 
     <link
@@ -50,7 +106,7 @@
         type="button"
         class="text-white aspect-square rounded-full text-center hover:cursor-pointer text-2xl"
         data-toggle="modal"
-        data-target="#results"
+        data-target="#scanQR"
       >
         <i class="bi bi-qr-code"></i>
       </button>
@@ -128,60 +184,21 @@
               &times;
             </button>
           </div>
-          <div class="relative flex px-4 flex-col pb-4 gap-2">
+          <div class="relative flex px-4 flex-col pb-4 gap-2" id="modalContent">
+            <h1 class="text-2xl text-center pb-4" id="spinText">Spinning...</h1>
+            <div id="pointer"></div>
             <div
-              class="min-h-[75px] flex flex-nowrap items-center overflow-x-auto"
-            >
-              <div class="aspect-square bg-red-500 w-[50px] min-w-[50px]"></div>
-              <div
-                class="aspect-square bg-amber-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-green-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-blue-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div class="aspect-square bg-red-500 w-[50px] min-w-[50px]"></div>
-              <div
-                class="aspect-square bg-amber-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-green-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-blue-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div class="aspect-square bg-red-500 w-[50px] min-w-[50px]"></div>
-              <div
-                class="aspect-square bg-amber-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-green-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-blue-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div class="aspect-square bg-red-500 w-[50px] min-w-[50px]"></div>
-              <div
-                class="aspect-square bg-amber-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-green-500 w-[50px] min-w-[50px]"
-              ></div>
-              <div
-                class="aspect-square bg-blue-500 w-[50px] min-w-[50px]"
-              ></div>
-            </div>
+              class="min-h-[50px] marquee pb-4 max-w-[250px] mx-auto"
+              id="roulette"
+            ></div>
           </div>
         </div>
       </div>
     </div>
     <!--Instructions-->
-    <!-- Results -->
     <div
       class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
-      id="results"
+      id="instruction"
       tabindex="-1"
       role="dialog"
     >
@@ -200,9 +217,7 @@
             </button>
           </div>
           <div class="relative flex px-4 flex-col pb-4 gap-2">
-            Hi [Insert Name],
-
-            Welcome to The Singularity!
+            Hi [Insert Name], Welcome to The Singularity!
           </div>
         </div>
       </div>
@@ -270,6 +285,7 @@
       if (localStorage.getItem("userData") == undefined) {
         window.location.href = "./login";
       }
+      const baseURL = window.location.href.split("/").slice(0, 3).join("/");
     </script>
     <!--Map-->
     <script>
@@ -339,7 +355,6 @@
       const videoContainer = document.getElementById("video-container");
 
       function setResult(result) {
-        alert(result.data);
         $("#results").modal("hide");
         $("#scanQR").modal("hide");
         window.location.href = result.data;
@@ -484,7 +499,7 @@
           colorDict[urlArr[index]] = colorArr[index];
         }
         axios
-          .post("./update", {
+          .post(`${baseURL}/update`, {
             links: colorDict,
             userID: JSON.parse(localStorage.getItem("userData")).id,
           })
@@ -518,8 +533,16 @@
     </script>
     <!-- Scan Check -->
     <script>
+      var blockDict = {
+        R: "bg-red-500",
+        Y: "bg-amber-500",
+        G: "bg-green-500",
+        B: "bg-blue-500",
+        W: "bg-white",
+        M: "bg-zinc-700",
+      };
       var urlLink = window.location.href.split("/");
-
+      var QR;
       if (urlLink.length > 4) {
         var isInLink = false;
         if (urlLink[urlLink.length - 2] == "qr") {
@@ -534,7 +557,45 @@
             })
             .then((response) => {
               if (JSON.parse(response.data).message == "QR") {
-                alert("QR");
+                QR = urlLink[urlLink.length - 1];
+                var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+                var rouletteArr = [
+                  "R",
+                  "R",
+                  "R",
+                  "R",
+                  "Y",
+                  "Y",
+                  "Y",
+                  "Y",
+                  "G",
+                  "G",
+                  "G",
+                  "G",
+                  "B",
+                  "B",
+                  "B",
+                  "B",
+                  "M",
+                  "M",
+                  "W",
+                ];
+                var marqueeContent = `<ul class="marquee__content">`;
+                var tempArr = [...shuffleArr(rouletteArr)];
+                tempArr.splice(2, 0, colorDict[QR]);
+                for (var c of tempArr) {
+                  marqueeContent += `
+                  <li class="marquee__item">
+                    <div  
+                      class="aspect-square ${blockDict[c]} w-[50px] min-w-[50px] border border-2 border-white"
+                    ></div>
+                  </li> 
+                  `;
+                }
+                marqueeContent += "</ul>";
+                document.getElementById("roulette").innerHTML =
+                  marqueeContent + marqueeContent;
+                return $("#results").modal("show");
               }
               window.location.href = "/";
             })
@@ -554,8 +615,174 @@
     <!--Randomized-->
     <script>
       $("#results").on("shown.bs.modal", function (e) {
-        console.log("hi");
+        var resultDict = {
+          R: "Red",
+          Y: "Yellow",
+          G: "Green",
+          B: "Blue",
+          W: "Wild",
+          M: "Penalty",
+        };
+        var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+        document
+          .querySelectorAll(".marquee__content")[1]
+          .addEventListener("animationend", () => {
+            var qrDict = JSON.parse(localStorage.getItem("QR"));
+            document.getElementById("spinText").innerText = `You got ${
+              resultDict[colorDict[QR]]
+            }`;
+            if (Object.keys(qrDict).includes(colorDict[QR])) {
+              qrDict[colorDict[QR]]++;
+              axios
+                .post(
+                  `${baseURL}/${
+                    JSON.parse(localStorage.getItem("userData")).id
+                  }/SOCC`,
+                  {
+                    qr: JSON.stringify(qrDict),
+                  }
+                )
+                .then((response) => {
+                  var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+                  var idDict = {
+                    R: "red",
+                    Y: "yellow",
+                    G: "green",
+                    B: "blue",
+                  };
+                  for (var [key, value] of Object.entries(
+                    JSON.parse(response.data.qr)
+                  )) {
+                    document.getElementById(idDict[key]).innerText = value;
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            } else if (colorDict[QR] == "W") {
+              document.getElementById("modalContent").innerHTML = `
+              <h1 class="text-2xl text-center pb-4" id="spinText">Wild Card!</h1>
+              <div class="grid grid-cols-2 grid-rows-2 w-1/2 mx-auto items-stretch pb-4">
+                <button class="aspect-square bg-red-500 w-full min-w-[50px]" onclick="updateScore('R')"></button>  
+                <button class="aspect-square bg-amber-500 w-full min-w-[50px]" onclick="updateScore('Y')"></button>  
+                <button class="aspect-square bg-green-500 w-full min-w-[50px]" onclick="updateScore('G')"></button>  
+                <button class="aspect-square bg-blue-500 w-full min-w-[50px]" onclick="updateScore('B')"></button>  
+              </div>
+              `;
+            } else {
+              const sortedArray = Object.entries(qrDict).sort(
+                (a, b) => b[1] - a[1]
+              );
+              const sortedObj = Object.fromEntries(sortedArray);
+              var temp = qrDict[Object.keys(sortedObj)[0]];
+              temp--;
+              if (temp >= 0) {
+                qrDict[Object.keys(sortedObj)[0]]--;
+              }
+              axios
+                .post(
+                  `${baseURL}/${
+                    JSON.parse(localStorage.getItem("userData")).id
+                  }/SOCC`,
+                  {
+                    qr: JSON.stringify(qrDict),
+                  }
+                )
+                .then((response) => {
+                  var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+                  var idDict = {
+                    R: "red",
+                    Y: "yellow",
+                    G: "green",
+                    B: "blue",
+                  };
+                  for (var [key, value] of Object.entries(
+                    JSON.parse(response.data.qr)
+                  )) {
+                    document.getElementById(idDict[key]).innerText = value;
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          });
+        for (var content of document.querySelectorAll(".marquee__content")) {
+          content.classList.add("stop");
+        }
       });
+
+      function updateScore(qrCode) {
+        var qrDict = JSON.parse(localStorage.getItem("QR"));
+        qrDict[qrCode]++;
+        axios
+          .post(
+            `${baseURL}/${
+              JSON.parse(localStorage.getItem("userData")).id
+            }/SOCC`,
+            {
+              qr: JSON.stringify(qrDict),
+            }
+          )
+          .then((response) => {
+            var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+            var idDict = {
+              R: "red",
+              Y: "yellow",
+              G: "green",
+              B: "blue",
+            };
+            for (var [key, value] of Object.entries(
+              JSON.parse(response.data.qr)
+            )) {
+              document.getElementById(idDict[key]).innerText = value;
+            }
+            window.location.href = "/";
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      $("#results").on("hidden.bs.modal", function (e) {
+        for (var content of document.querySelectorAll(".marquee__content")) {
+          content.classList.remove("stop");
+        }
+        document.getElementById("spinText").innerText = "Spinning...";
+        window.location.href = "/";
+      });
+    </script>
+    <!--Progress Update-->
+    <script>
+      axios
+        .get(
+          `${baseURL}/${JSON.parse(localStorage.getItem("userData")).id}/SOCC`
+        )
+        .then((response) => {
+          var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+          var idDict = {
+            R: "red",
+            Y: "yellow",
+            G: "green",
+            B: "blue",
+          };
+          var escape = false;
+          for (var [key, value] of Object.entries(
+            JSON.parse(response.data.qr)
+          )) {
+            document.getElementById(idDict[key]).innerText = value;
+            if (value >= 5) {
+              escape = true;
+            }
+          }
+          localStorage.setItem("QR", response.data.qr);
+          if (escape) {
+            alert("Escape!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     </script>
   </body>
 </html>
