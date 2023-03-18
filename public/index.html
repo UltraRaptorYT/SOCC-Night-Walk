@@ -126,7 +126,8 @@
               <td class="p-3">
                 <img
                   src="./img/FOCStamp.png"
-                  class="w-full aspect-square max-h-[100px]"
+                  class="w-full aspect-square max-h-[100px] opacity-0"
+                  id="SOCimg"
                 />
               </td>
             </tr>
@@ -135,7 +136,8 @@
               <td class="p-3">
                 <img
                   src="./img/FOCStamp.png"
-                  class="w-full aspect-square max-h-[100px]"
+                  class="w-full aspect-square max-h-[100px] opacity-0"
+                  id="EEEimg"
                 />
               </td>
             </tr>
@@ -320,7 +322,7 @@
 
           // Display the user's location and direction on the map
           const player = document.createElement("div");
-          player.style.backgroundImage = `url(https://media.discordapp.net/attachments/910885868733087747/1068527441720647840/image-removebg-preview.png)`;
+          player.style.backgroundImage = `url(https://media.discordapp.net/attachments/987984924256649247/1086727335945977886/humanicon2.png)`;
           player.id = `playerChar`;
           player.style.minWidth = `10px`;
           player.style.maxWidth = `50px`;
@@ -596,11 +598,12 @@
                 document.getElementById("roulette").innerHTML =
                   marqueeContent + marqueeContent;
                 return $("#results").modal("show");
+              } else {
               }
               window.location.href = "/";
             })
             .catch((error) => {
-              if (error.response.status == 400) {
+              if (error.response.status == 500) {
                 alert("QR Code has been already scanned");
                 window.location.href = "/";
               }
@@ -779,6 +782,31 @@
           if (escape) {
             alert("Escape!");
           }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      axios
+        .get(
+          `${baseURL}/progress/${
+            JSON.parse(localStorage.getItem("userData")).id
+          }`
+        )
+        .then((response) => {
+          for (var progress of response.data) {
+            if (progress.route_name == "SOC") {
+              document.getElementById("SOCimg").classList.remove("opacity-0");
+              if (progress.exit_time == null) {
+                document.getElementById("SOCimg").classList.add("opacity-50");
+              }
+            } else {
+              document.getElementById("EEEimg").classList.remove("opacity-0");
+              if (progress.exit_time == null) {
+                document.getElementById("EEEimg").classList.add("opacity-50");
+              }
+            }
+          }
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

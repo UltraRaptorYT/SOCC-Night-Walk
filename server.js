@@ -144,6 +144,18 @@ var urlArr = [
   "d95819df3ba623fec705baf34f0f33b1c7bd366e5ed595d2dc1eb972",
 ];
 
+app.get("/progress/:userID", async (req, res) => {
+  var userID = req.params.userID;
+  const { data, error } = await supabase
+    .from("progress")
+    .select("*")
+    .eq("userid", userID);
+  if (error) {
+    return res.status(500).json(error);
+  }
+  return res.status(200).json(data);
+});
+
 app.get("/:userID/SOCC", async (req, res) => {
   var userID = req.params.userID;
   const { data, error } = await supabase
@@ -223,7 +235,7 @@ app.post("/:progress/:code", async (req, res) => {
         code: req.params.code,
       });
       if (error) {
-        return res.status(400).json(error);
+        return res.status(500).json(error);
       }
       return res.status(200).json(`{
         "message": "QR"
@@ -232,7 +244,7 @@ app.post("/:progress/:code", async (req, res) => {
   }
 });
 
-// //e75169589b9641e78815bbf02b5dd5ae87b1f38f93f46aa979f44ee1
+//e75169589b9641e78815bbf02b5dd5ae87b1f38f93f46aa979f44ee1
 
 // app.get(
 //   "/end/2a5d9639c7dc16c6765a02f0800bbc13fad574ae882962e36af428fe",
