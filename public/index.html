@@ -325,7 +325,7 @@
   <!--Login Check-->
   <script>
     if (localStorage.getItem("userData") == undefined) {
-      window.location.href = "./login";
+      window.location.href = `${baseURL}/login`;
     }
     const baseURL = window.location.href.split("/").slice(0, 3).join("/");
   </script>

@@ -16,7 +16,90 @@
       src="https://kit.fontawesome.com/825a35d965.js"
       crossorigin="anonymous"
     ></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@800&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      @keyframes blink {
+        78% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+
+        79% {
+          color: #333;
+        }
+
+        80% {
+          text-shadow: none;
+        }
+
+        81% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+
+        82% {
+          color: #333;
+          text-shadow: none;
+        }
+
+        83% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+
+        92% {
+          color: #333;
+          text-shadow: none;
+        }
+
+        92.5% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+      }
+
+      @keyframes fade-in-top {
+        0% {
+          -webkit-transform: translateY(-50px);
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+
+        100% {
+          -webkit-transform: translateY(0);
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes enterImage {
+        0% {
+          transform: translateY(-200px);
+          opacity: 0;
+        }
+
+        25% {
+          transform: translateY(100px);
+          opacity: 1;
+        }
+
+        75% {
+          transform: translateY(100px);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
       body {
         height: 100dvh;
       }
@@ -29,21 +112,76 @@
         width: 30px;
         height: 30px;
       }
+
+      body {
+        background-image: url("img/pagebg.png");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+      }
+
+      h1 {
+        text-shadow: #fff 0px 0px 5px, rgba(1, 1, 1, 0.3) 0px 0px 10px,
+          #fff 0px 0px 15px, rgba(192, 124, 248) 0px 0px 20px,
+          rgba(192, 124, 248) 0px 0px 30px, rgba(192, 124, 248) 0px 0px 40px,
+          rgba(192, 124, 248) 0px 0px 50px, rgba(192, 124, 248) 0px 0px 75px;
+      }
+
+      h1 span {
+        animation: blink 2s linear infinite;
+      }
+
+      h1 span:nth-of-type(2) {
+        animation: blink 3s linear infinite;
+      }
+
+      img {
+        animation: enterImage 3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      }
+
+      .welcomeText {
+        transform: scale(1, 0.8);
+        letter-spacing: 3px;
+      }
+
+      form {
+        margin-top: -100px;
+        animation: fade-in-top 1s cubic-bezier(0.39, 0.575, 0.565, 1) 2.5s both;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          background-image: url("img/mobilebg.png");
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-position: center;
+          background-size: cover;
+        }
+      }
     </style>
-    <link rel="stylesheet" href="./login.css" />
   </head>
   <body class="bg-black text-white max-w-[500px] mx-auto">
     <div id="main" class="p-4 flex flex-col justify-between">
+      <img src="img/FOCMainlogo.png" alt="FOCMainLogo" />
       <form
         id="form"
         class="flex flex-col items-center gap-5 w-full h-full justify-center"
       >
-        <h1 class="text-2xl font-bold">Sign Up</h1>
+        <h1
+          class="text-2xl font-bold"
+          style="
+            font-family: 'Barlow';
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 1.4em;
+            font-weight: 'bold';
+          "
+        >
+          <span>Si</span>gn <span>Up</span>
+        </h1>
         <div class="w-3/4 mx-auto">
-          <label
-            class="block text-gray-300 text-sm font-bold mb-2"
-            for="fullName"
-          >
+          <label class="block text-gray-300 text-sm font-bold mb-2" for="email">
             Full Name
           </label>
           <input
@@ -68,11 +206,11 @@
             required
           />
         </div>
-        <div class="flex flex-col w-3/4 items-center">
+        <div class="flex flex-col w-3/4 mx-auto items-center">
           <div id="err" class="text-red-500 text-sm mb-2">&nbsp;</div>
           <a
             href="./login"
-            class="text-white text-right text-xs underline ml-auto mb-6"
+            class="pwText text-white text-right text-xs underline ml-auto mb-6"
             >Already have an account? Login now!</a
           >
           <button
@@ -86,6 +224,7 @@
       </form>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script>
       localStorage.clear();
       document.getElementById("fullName").addEventListener("input", () => {
