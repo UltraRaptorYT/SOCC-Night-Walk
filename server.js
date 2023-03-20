@@ -182,6 +182,7 @@ app.post("/:userID/SOCC", async (req, res) => {
 });
 
 app.get("/:progress/:code", async (req, res) => {
+  console.log(__dirname);
   return res.sendFile("/index.html", { root: __dirname + "/public" });
 });
 
@@ -244,7 +245,12 @@ app.post("/:progress/:code", async (req, res) => {
   }
 });
 
-//e75169589b9641e78815bbf02b5dd5ae87b1f38f93f46aa979f44ee1
+// app.get(
+//   "/start/e75169589b9641e78815bbf02b5dd5ae87b1f38f93f46aa979f44ee1",
+//   async (req, res) => {
+//     return res.redirect("/");
+//   }
+// );
 
 // app.get(
 //   "/end/2a5d9639c7dc16c6765a02f0800bbc13fad574ae882962e36af428fe",
