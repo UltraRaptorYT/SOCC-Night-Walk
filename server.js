@@ -142,6 +142,11 @@ var urlArr = [
   "2a5d9639c7dc16c6765a02f0800bbc13fad574ae882962e36af428fe",
   "06b38eae6e3def5ec4a663099b86e22fe95577e00af55ff931e9e6b6",
   "d95819df3ba623fec705baf34f0f33b1c7bd366e5ed595d2dc1eb972",
+  "5cfe2cddbb9940fb4d8505e25ea77e763a0077693dbb01b1a6aa94f2",
+  "a8dfe9873e71c1e2c2ff4decd814264d9a27693d0180e479dffaea4f",
+  "e495146b841a91df32daa714325a4eaa4ce43e1b517e50e49f6707da",
+  "b878830c88e4372204be0ac53781507936279ee68c38c9bf14f7cca0",
+  "199ca440800489f6f24fbb1b37c76ae58dce7ec57d7b251e06566682",
 ];
 
 app.get("/progress/:userID", async (req, res) => {
@@ -182,7 +187,6 @@ app.post("/:userID/SOCC", async (req, res) => {
 });
 
 app.get("/:progress/:code", async (req, res) => {
-  console.log(__dirname);
   return res.sendFile("/index.html", { root: __dirname + "/public" });
 });
 
