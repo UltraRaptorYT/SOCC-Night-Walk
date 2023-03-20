@@ -201,6 +201,7 @@
               JSON.stringify(JSON.parse(response.data[0].SOCC))
             );
           }
+          sessionStorage.setItem("firstTime", true)
           window.location.href = "/";
         })
         .catch((error) => {
