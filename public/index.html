@@ -327,25 +327,25 @@
         <div id="tracker" class="flex items-end p-3 mt-3 justify-around gap-2">
           <div class="flex items-center justify-center gap-2">
             <div class="circle p-5 aspect-square bg-red-500 rounded-full"></div>
-            <div><span id="red">0</span>/5</div>
+            <div><span id="red">0</span>/3</div>
           </div>
           <div class="flex items-center justify-center gap-2">
             <div
               class="circle p-5 aspect-square bg-amber-500 rounded-full"
             ></div>
-            <div><span id="yellow">0</span>/5</div>
+            <div><span id="yellow">0</span>/3</div>
           </div>
           <div class="flex items-center justify-center gap-2">
             <div
               class="circle p-5 aspect-square bg-green-500 rounded-full"
             ></div>
-            <div><span id="green">0</span>/5</div>
+            <div><span id="green">0</span>/3</div>
           </div>
           <div class="flex items-center justify-center gap-2">
             <div
               class="circle p-5 aspect-square bg-blue-500 rounded-full"
             ></div>
-            <div><span id="blue">0</span>/5</div>
+            <div><span id="blue">0</span>/3</div>
           </div>
         </div>
       </div>
@@ -546,7 +546,7 @@
               The Special Organisms Centre has been contaminated with infected
               airborne particles from the alien ship we found recently. You are
               at risk of being infected as well! Find
-              <b>5 Component Keys [QR Codes]</b> of the same colour and make
+              <b>3 Component Keys [QR Codes]</b> of the same colour and make
               your way to the Decontamination Chamber. Collect
               <b>Element Rings [Light Rings]</b> as they are currency in this
               institution. The Marshals will help you if you are lost. Avoid the
@@ -1184,7 +1184,7 @@
             JSON.parse(response.data.qr)
           )) {
             document.getElementById(idDict[key]).innerText = value;
-            if (value >= 5) {
+            if (value >= 3) {
               escape = true;
             }
           }
