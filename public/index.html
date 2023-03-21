@@ -292,6 +292,7 @@
     <div id="main" class="">
       <div class="circleWrap">
         <button
+          id="mission"
           type="button"
           style="position: absolute"
           class="circleButton hover:cursor-pointer"
@@ -453,7 +454,7 @@
             </button>
           </div>
           <div class="relative flex px-4 flex-col pb-4 md:gap-3">
-            <div>
+            <div class="pb-2">
               Paging <span id="name">Camper</span>, This is mission control.
             </div>
             <div class="text-justify">
@@ -540,13 +541,13 @@
             <div class="text-justify">
               The Special Organisms Centre has been contaminated with infected
               airborne particles from the alien ship we found recently. You are
-              at risk of being infected as well! Find 5 Component Keys [QR Codes] of the
-              same colour and make your way to the Decontamination Chamber.
-              Collect Element Rings as they are currency in this institution.
-              The Marshals will help you if you are lost. Avoid the Gulchers!
-              They scavenge for Element Rings. Be careful, as some Component
-              Keys are among the Infected!
-            </div>            
+              at risk of being infected as well! Find 5 Component Keys [QR
+              Codes] of the same colour and make your way to the Decontamination
+              Chamber. Collect Element Rings as they are currency in this
+              institution. The Marshals will help you if you are lost. Avoid the
+              Gulchers! They scavenge for Element Rings. Be careful, as some
+              Component Keys are among the Infected!
+            </div>
           </div>
         </div>
       </div>
@@ -946,8 +947,10 @@
                 return $("#results").modal("show");
               } else if (JSON.parse(response.data).message == "SOC") {
                 $("#SOCModal").modal("show");
+                sessionStorage.setItem("showSOC", true);
               } else if (JSON.parse(response.data).message == "EEE") {
                 $("#EEEModal").modal("show");
+                sessionStorage.setItem("showEEE", true);
               }
               window.location.href = "/";
             })
@@ -1137,6 +1140,14 @@
         .catch((error) => {
           console.log(error);
         });
+      if (sessionStorage.getItem("showSOC")) {
+        $("#SOCModal").modal("show");
+        sessionStorage.setItem("showSOC", false);
+      }
+      if (sessionStorage.getItem("showEEE")) {
+        $("#EEEModal").modal("show");
+        sessionStorage.setItem("showEEE", false);
+      }
       axios
         .get(
           `${baseURL}/progress/${
@@ -1149,11 +1160,23 @@
               document.getElementById("SOCimg").classList.remove("opacity-0");
               if (progress.exit_time == null) {
                 document.getElementById("SOCimg").classList.add("opacity-25");
+                document
+                  .getElementById("mission")
+                  .setAttribute("data-target", "#SOCModal");
               }
             } else {
               document.getElementById("EEEimg").classList.remove("opacity-0");
               if (progress.exit_time == null) {
                 document.getElementById("EEEimg").classList.add("opacity-25");
+                if (
+                  document
+                    .getElementById("mission")
+                    .getAttribute("data-target") != "#SOCModal"
+                ) {
+                  document
+                    .getElementById("mission")
+                    .setAttribute("data-target", "#EEEModal");
+                }
               }
             }
           }
