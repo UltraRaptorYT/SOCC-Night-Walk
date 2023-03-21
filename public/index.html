@@ -541,9 +541,10 @@
             <div class="text-left">
               The Special Organisms Centre has been contaminated with infected
               airborne particles from the alien ship we found recently. You are
-              at risk of being infected as well! Find <b>5 Component Keys [QR
-              Codes]</b> of the same colour and make your way to the Decontamination
-              Chamber. Collect <b>Element Rings [Light Rings]</b> as they are currency in this
+              at risk of being infected as well! Find
+              <b>5 Component Keys [QR Codes]</b> of the same colour and make
+              your way to the Decontamination Chamber. Collect
+              <b>Element Rings [Light Rings]</b> as they are currency in this
               institution. The Marshals will help you if you are lost. Avoid the
               Gulchers! They scavenge for Element Rings. Be careful, as some
               Component Keys are among the Infected!
@@ -643,9 +644,13 @@
         // map["touchZoomRotate"].disable();
         // map["doubleClickZoom"].disable();
         // map["boxZoom"].disable();
-        // var EEE_start = new mapboxgl.Marker(player, { anchor: "bottom" })
-        //   .setLngLat([lng, lat])
-        //   .addTo(map);
+        var EEE_start = new mapboxgl.Marker({
+          anchor: "bottom",
+          color: "#FFFFFF",
+          draggable: false,
+        })
+          .setLngLat([103.7790275225191, 1.309673521280902])
+          .addTo(map);
       });
       navigator.geolocation.watchPosition(
         function (position) {
@@ -1140,11 +1145,11 @@
         .catch((error) => {
           console.log(error);
         });
-      if (sessionStorage.getItem("showSOC")) {
+      if (sessionStorage.getItem("showSOC") == "true") {
         $("#SOCModal").modal("show");
         sessionStorage.setItem("showSOC", false);
       }
-      if (sessionStorage.getItem("showEEE")) {
+      if (sessionStorage.getItem("showEEE") == "true") {
         $("#EEEModal").modal("show");
         sessionStorage.setItem("showEEE", false);
       }
@@ -1164,6 +1169,9 @@
                   .getElementById("mission")
                   .setAttribute("data-target", "#SOCModal");
               }
+              document
+                .getElementById("mission")
+                .setAttribute("data-target", "#instruction");
             } else {
               document.getElementById("EEEimg").classList.remove("opacity-0");
               if (progress.exit_time == null) {
@@ -1178,9 +1186,11 @@
                     .setAttribute("data-target", "#EEEModal");
                 }
               }
+              document
+                .getElementById("mission")
+                .setAttribute("data-target", "#instruction");
             }
           }
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
