@@ -1,830 +1,912 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="./img/SOCC.png" />
-  <title>SOCC Night Walk</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/825a35d965.js" crossorigin="anonymous"></script>
-  <style>
-    body {
-      height: auto;
-      padding-bottom: 5vh;
-      background-image: url("img/pagebg.png");
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-position: center;
-      background-size: cover;
-    }
-
-    .height {
-      height: 100dvh;
-    }
-
-    .circle {
-      width: 30px;
-      height: 30px;
-    }
-
-    .marquee {
-      --gap: 0rem;
-      position: relative;
-      display: flex;
-      overflow: hidden;
-      user-select: none;
-      gap: var(--gap);
-    }
-
-    .marquee__content {
-      flex-shrink: 0;
-      display: flex;
-      justify-content: space-around;
-      gap: var(--gap);
-      min-width: 100%;
-      animation: scroll 4s linear infinite;
-    }
-
-    .stop {
-      animation: scrollTrans 2s ease-out 1 !important;
-    }
-
-    @keyframes scroll {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(calc(-100% - var(--gap)));
-      }
-    }
-
-    @keyframes scrollTrans {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(calc(-100% - var(--gap)));
-      }
-    }
-
-    @keyframes blink {
-      78% {
-        color: inherit;
-        text-shadow: inherit;
-      }
-
-      79% {
-        color: #333;
-      }
-
-      80% {
-        text-shadow: none;
-      }
-
-      81% {
-        color: inherit;
-        text-shadow: inherit;
-      }
-
-      82% {
-        color: #333;
-        text-shadow: none;
-      }
-
-      83% {
-        color: inherit;
-        text-shadow: inherit;
-      }
-
-      92% {
-        color: #333;
-        text-shadow: none;
-      }
-
-      92.5% {
-        color: inherit;
-        text-shadow: inherit;
-      }
-    }
-
-    #pointer {
-      position: relative;
-    }
-
-    #pointer::before {
-      content: "";
-      position: absolute;
-      width: 5px;
-      height: 15px;
-      background-color: pink;
-      left: 50%;
-      transform: translate(-50%, 3px);
-      z-index: 1006;
-      border: 1px solid black;
-    }
-
-    header h1 {
-      text-shadow: #fff 0px 0px 5px, rgba(1, 1, 1, 0.2) 0px 0px 10px,
-        #fff 0px 0px 15px, rgba(192, 124, 248) 0px 0px 20px,
-        rgba(192, 124, 248) 0px 0px 30px, rgba(192, 124, 248) 0px 0px 40px,
-        rgba(192, 124, 248) 0px 0px 50px, rgba(192, 124, 248) 0px 0px 75px;
-    }
-
-    header h1 span {
-      animation: blink 2s linear infinite;
-    }
-
-    header h1 span:nth-of-type(2) {
-      animation: blink 5s linear 7s infinite;
-    }
-
-    header {
-      box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
-    }
-
-    #map {
-      width: 80vw;
-      min-width: 320px;
-      max-width: 320px;
-      height: 50vh;
-      max-height: 320px;
-      min-height: 320px;
-      margin: 0 auto;
-      margin-top: 40px;
-      border-radius: 50%;
-      aspect-ratio: 1/1;
-    }
-
-    .stampHead th {
-      height: 6vh;
-    }
-
-    .linebreak {
-      width: 80%;
-      height: 0.3vh;
-      background-color: white;
-      margin: 30px auto;
-    }
-
-    .trackersWrap {
-      /* background-color: rgba(26, 26, 26, 0.5); */
-      padding: 10px;
-      padding-top: 7vh;
-      /* padding-bottom: 7vh; */
-      width: 350px;
-      margin: 0 auto;
-    }
-
-    .trackersWrap h2 {
-      letter-spacing: 0.2em;
-      text-shadow:
-        /* 0 0 7px #fff,
-        0 0 10px #fff, */
-        0 0 21px #fff,
-        0 0 42px rgba(192, 124, 248), 0 0 82px rgba(192, 124, 248),
-        0 0 92px rgba(192, 124, 248), 0 0 102px rgba(192, 124, 248),
-        0 0 151px rgba(192, 124, 248);
-    }
-
-    .trackheader {
-      justify-content: space-between;
-    }
-
-    #table {
-      padding: 20px;
-    }
-
-    table {
-      margin: 0 auto;
-      background-color: rgba(26, 26, 26, 0.5);
-      padding: 10px;
-      height: 60vh;
-      border-radius: 50px;
-      border-collapse: collapse;
-      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
-    }
-
-    table th {
-      padding-top: 30px;
-      text-shadow:
-        /* 0 0 7px #fff,
-        0 0 10px #fff, */
-        0 0 21px #fff,
-        0 0 37px rgba(192, 124, 248), 0 0 82px rgba(192, 124, 248),
-        0 0 92px rgba(192, 124, 248), 0 0 92px rgba(192, 124, 248),
-        0 0 111px rgba(192, 124, 248);
-    }
-
-    .circleWrap {
-      width: 350px;
-      margin: 0 auto;
-    }
-
-    .circle {
-      opacity: 0.5;
-      position: absolute;
-      padding-left: 10px;
-      text-shadow:
-        /* 0 0 7px #fff,
-        0 0 10px #fff, */
-        0 0 21px #fff,
-        0 0 37px rgba(192, 124, 248), 0 0 82px rgba(192, 124, 248),
-        0 0 92px rgba(192, 124, 248), 0 0 92px rgba(192, 124, 248),
-        0 0 111px rgba(192, 124, 248);
-    }
-
-    .circleButton {
-      margin: 10px 10px;
-      z-index: 100;
-    }
-
-    @media (max-width: 768px) {
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./img/SOCC.png" />
+    <title>SOCC Night Walk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://kit.fontawesome.com/825a35d965.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
       body {
-        background-image: url("img/mobilebg.png");
+        height: auto;
+        padding-bottom: 5vh;
+        background-image: url("img/pagebg.png");
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center;
         background-size: cover;
       }
-    }
-  </style>
 
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
-</head>
+      .height {
+        height: 100dvh;
+      }
 
-<body class="bg-black text-white">
-  <header class="flex justify-center items-center p-4 measure">
-    <h1 class="text-2xl font-bold" style="
+      .circle {
+        width: 30px;
+        height: 30px;
+      }
+
+      .marquee {
+        --gap: 0rem;
+        position: relative;
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        gap: var(--gap);
+      }
+
+      .marquee__content {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        gap: var(--gap);
+        min-width: 100%;
+        animation: scroll 4s linear infinite;
+      }
+
+      .stop {
+        animation: scrollTrans 2s ease-out 1 !important;
+      }
+
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(calc(-100% - var(--gap)));
+        }
+      }
+
+      @keyframes scrollTrans {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(calc(-100% - var(--gap)));
+        }
+      }
+
+      @keyframes blink {
+        78% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+
+        79% {
+          color: #333;
+        }
+
+        80% {
+          text-shadow: none;
+        }
+
+        81% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+
+        82% {
+          color: #333;
+          text-shadow: none;
+        }
+
+        83% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+
+        92% {
+          color: #333;
+          text-shadow: none;
+        }
+
+        92.5% {
+          color: inherit;
+          text-shadow: inherit;
+        }
+      }
+
+      #pointer {
+        position: relative;
+      }
+
+      #pointer::before {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 15px;
+        background-color: pink;
+        left: 50%;
+        transform: translate(-50%, 3px);
+        z-index: 1006;
+        border: 1px solid black;
+      }
+
+      header h1 {
+        text-shadow: #fff 0px 0px 5px, rgba(1, 1, 1, 0.2) 0px 0px 10px,
+          #fff 0px 0px 15px, rgba(192, 124, 248) 0px 0px 20px,
+          rgba(192, 124, 248) 0px 0px 30px, rgba(192, 124, 248) 0px 0px 40px,
+          rgba(192, 124, 248) 0px 0px 50px, rgba(192, 124, 248) 0px 0px 75px;
+      }
+
+      header h1 span {
+        animation: blink 2s linear infinite;
+      }
+
+      header h1 span:nth-of-type(2) {
+        animation: blink 5s linear 7s infinite;
+      }
+
+      header {
+        box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
+      }
+
+      #map {
+        width: 80vw;
+        min-width: 320px;
+        max-width: 320px;
+        height: 50vh;
+        max-height: 320px;
+        min-height: 320px;
+        margin: 0 auto;
+        margin-top: 40px;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+      }
+
+      .stampHead th {
+        height: 6vh;
+      }
+
+      .linebreak {
+        width: 80%;
+        height: 0.3vh;
+        background-color: white;
+        margin: 30px auto;
+      }
+
+      .trackersWrap {
+        /* background-color: rgba(26, 26, 26, 0.5); */
+        padding: 10px;
+        padding-top: 7vh;
+        /* padding-bottom: 7vh; */
+        width: 350px;
+        margin: 0 auto;
+      }
+
+      .trackersWrap h2 {
+        letter-spacing: 0.2em;
+        text-shadow:
+        /* 0 0 7px #fff,
+        0 0 10px #fff, */ 0 0 21px
+            #fff,
+          0 0 42px rgba(192, 124, 248), 0 0 82px rgba(192, 124, 248),
+          0 0 92px rgba(192, 124, 248), 0 0 102px rgba(192, 124, 248),
+          0 0 151px rgba(192, 124, 248);
+      }
+
+      .trackheader {
+        justify-content: space-between;
+      }
+
+      #table {
+        padding: 20px;
+      }
+
+      table {
+        margin: 0 auto;
+        background-color: rgba(26, 26, 26, 0.5);
+        padding: 10px;
+        height: 60vh;
+        border-radius: 50px;
+        border-collapse: collapse;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+      }
+
+      table th {
+        padding-top: 30px;
+        text-shadow:
+        /* 0 0 7px #fff,
+        0 0 10px #fff, */ 0 0 21px
+            #fff,
+          0 0 37px rgba(192, 124, 248), 0 0 82px rgba(192, 124, 248),
+          0 0 92px rgba(192, 124, 248), 0 0 92px rgba(192, 124, 248),
+          0 0 111px rgba(192, 124, 248);
+      }
+
+      .circleWrap {
+        width: 350px;
+        margin: 0 auto;
+      }
+
+      .circle {
+        opacity: 0.5;
+        position: absolute;
+        padding-left: 10px;
+        text-shadow:
+        /* 0 0 7px #fff,
+        0 0 10px #fff, */ 0 0 21px
+            #fff,
+          0 0 37px rgba(192, 124, 248), 0 0 82px rgba(192, 124, 248),
+          0 0 92px rgba(192, 124, 248), 0 0 92px rgba(192, 124, 248),
+          0 0 111px rgba(192, 124, 248);
+      }
+
+      .circleButton {
+        margin: 10px 10px;
+        z-index: 100;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          background-image: url("img/mobilebg.png");
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-position: center;
+          background-size: cover;
+        }
+      }
+    </style>
+
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+  </head>
+
+  <body class="bg-black text-white">
+    <header class="flex justify-center items-center p-4 measure">
+      <h1
+        class="text-2xl font-bold"
+        style="
           font-family: 'Barlow';
           text-transform: uppercase;
           letter-spacing: 0.3em;
           font-size: 1.5em;
           font-weight: 'bold';
-        ">
-      S<span>OC</span>C Night <span>Walk</span>
-    </h1>
-  </header>
+        "
+      >
+        S<span>OC</span>C Night <span>Walk</span>
+      </h1>
+    </header>
 
-  <div id="main" class="">
-    <div class="circleWrap">
-      <button type="button" style="position: absolute" class="circleButton hover:cursor-pointer" data-toggle="modal"
-        data-target="#instruction">
-        <i class="bi circle bi-question-circle"></i>
-      </button>
-
-    </div>
-    <div id="map" style="height: 50vh"></div>
-    <div class="trackersWrap">
-      <div class="trackheader flex">
-        <h2 class="" style="font-size: 1.2em; font-family: 'Barlow'; color: #fdfdc9">
-          TRACKERS GAINED:
-        </h2>
-        <button type="button" class="text-white aspect-square rounded-full text-center hover:cursor-pointer text-2xl"
-          data-toggle="modal" data-target="#scanQR">
-          <i class="bi bi-qr-code"></i>
+    <div id="main" class="">
+      <div class="circleWrap">
+        <button
+          type="button"
+          style="position: absolute"
+          class="circleButton hover:cursor-pointer"
+          data-toggle="modal"
+          data-target="#instruction"
+        >
+          <i class="bi circle bi-question-circle"></i>
         </button>
       </div>
-      <div id="tracker" class="flex items-end p-3 mt-3 justify-around gap-2">
-        <div class="flex items-center justify-center gap-2">
-          <div class="circle aspect-square bg-red-500 rounded-full"></div>
-          <div><span id="red">0</span>/5</div>
-        </div>
-        <div class="flex items-center justify-center gap-2">
-          <div class="circle aspect-square bg-amber-500 rounded-full"></div>
-          <div><span id="yellow">0</span>/5</div>
-        </div>
-        <div class="flex items-center justify-center gap-2">
-          <div class="circle aspect-square bg-green-500 rounded-full"></div>
-          <div><span id="green">0</span>/5</div>
-        </div>
-        <div class="flex items-center justify-center gap-2">
-          <div class="circle aspect-square bg-blue-500 rounded-full"></div>
-          <div><span id="blue">0</span>/5</div>
-        </div>
-      </div>
-    </div>
-
-    <div id="table">
-      <table class="table-auto text-center">
-        <thead class="stampHead">
-          <tr>
-            <th class="w-2/3" style="color: #fdfdc9; letter-spacing: 0.1em">
-              STATION
-            </th>
-            <th class="w-1/3 min-w-[100px]" style="color: #fdfdc9; letter-spacing: 0.1em">
-              STAMP
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom: 1pt solid rgba(0, 0, 0, 0.5)">
-            <td>The Serum Station</td>
-            <td class="p-3">
-              <img src="./img/stamp2.png" class="w-full aspect-square max-h-[100px] opacity-0" id="SOCimg" />
-            </td>
-          </tr>
-          <tr>
-            <td>The Containment Unit</td>
-            <td class="p-3">
-              <img src="./img/stamp1.png" class="w-full aspect-square max-h-[100px] opacity-0" id="EEEimg" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Results -->
-  <div class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]" id="results" tabindex="-1"
-    role="dialog">
-    <div class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
-      role="document">
-      <div class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg">
-        <div class="flex items-start justify-end p-4 border-gray-300 rounded-t">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
+      <div id="map" style="height: 50vh"></div>
+      <div class="trackersWrap">
+        <div class="trackheader flex">
+          <h2
+            class=""
+            style="font-size: 1.2em; font-family: 'Barlow'; color: #fdfdc9"
+          >
+            TRACKERS GAINED:
+          </h2>
+          <button
+            type="button"
+            class="text-white aspect-square rounded-full text-center hover:cursor-pointer text-2xl"
+            data-toggle="modal"
+            data-target="#scanQR"
+          >
+            <i class="bi bi-qr-code"></i>
           </button>
         </div>
-        <div class="relative flex px-4 flex-col pb-4 gap-2" id="modalContent">
-          <h1 class="text-2xl text-center pb-4" id="spinText">Spinning...</h1>
-          <div id="pointer"></div>
-          <div class="min-h-[50px] marquee pb-4 max-w-[250px] mx-auto" id="roulette"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--Instructions-->
-  <div class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]" id="instruction" tabindex="-1"
-    role="dialog">
-    <div class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
-      role="document">
-      <div class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg">
-        <div class="flex items-start justify-end p-4 border-gray-300 rounded-t">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
-          </button>
-        </div>
-        <div class="relative flex px-4 flex-col pb-4 gap-2">
-          <div>
-            Hi <span id="name">Camper</span>, Welcome to The Singularity!
+        <div id="tracker" class="flex items-end p-3 mt-3 justify-around gap-2">
+          <div class="flex items-center justify-center gap-2">
+            <div class="circle p-5 aspect-square bg-red-500 rounded-full"></div>
+            <div><span id="red">0</span>/5</div>
           </div>
-          <img
-            src="https://media.discordapp.net/attachments/840592860310929449/1087038429092646923/image-removebg-preview.png" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- scanQR -->
-  <div class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]" id="scanQR" tabindex="-1"
-    role="dialog">
-    <div class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
-      role="document">
-      <div class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg">
-        <div class="flex items-start justify-end p-4 border-gray-300 rounded-t">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
-          </button>
-        </div>
-        <div class="relative flex px-4 flex-col pb-4 gap-2">
-          <div id="video-container" class="aspect-[4/3] w-full">
-            <video id="qr-video" class="w-full h-full object-cover"></video>
+          <div class="flex items-center justify-center gap-2">
+            <div class="circle p-5 aspect-square bg-amber-500 rounded-full"></div>
+            <div><span id="yellow">0</span>/5</div>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <div class="circle p-5 aspect-square bg-green-500 rounded-full"></div>
+            <div><span id="green">0</span>/5</div>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <div class="circle p-5 aspect-square bg-blue-500 rounded-full"></div>
+            <div><span id="blue">0</span>/5</div>
           </div>
         </div>
       </div>
+
+      <div id="table">
+        <table class="table-auto text-center">
+          <thead class="stampHead">
+            <tr style="border-bottom: 1pt solid rgba(255, 255, 255, 0.5)" >
+              <th class="w-7/12 pb-3" style="color: #fdfdc9; letter-spacing: 0.1em">
+                STATION
+              </th>
+              <th
+                class="w-5/12 min-w-[100px] pb-3"
+                style="color: #fdfdc9; letter-spacing: 0.1em;border-left: 1pt solid rgba(255, 255, 255, 0.5)"
+              >
+                STAMP
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1pt solid rgba(255, 255, 255, 0.5)">
+              <td>The Serum Station</td>
+              <td class="p-3" style="border-left: 1pt solid rgba(255, 255, 255, 0.5)">
+                <img
+                  src="./img/stamp2.png"
+                  class="w-full aspect-square  max-w-[100px] max-h-[100px] opacity-0 mx-auto"
+                  id="SOCimg"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>The Containment Unit</td>
+              <td class="p-3"  style="border-left: 1pt solid rgba(255, 255, 255, 0.5)">
+                <img
+                  src="./img/stamp1.png"
+                  class="w-full aspect-square  max-w-[100px] max-h-[100px] opacity-0 mx-auto"
+                  id="EEEimg"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <script>
-    function getAbsoluteHeight(el) {
-      // Get the DOM Node if you pass in a string
-      el = typeof el === "string" ? document.querySelector(el) : el;
 
-      var styles = window.getComputedStyle(el);
-      var margin =
-        parseFloat(styles["marginTop"]) + parseFloat(styles["marginBottom"]);
+    <!-- Results -->
+    <div
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
+      id="results"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div
+        class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
+        role="document"
+      >
+        <div
+          class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg"
+        >
+          <div
+            class="flex items-start justify-end p-4 border-gray-300 rounded-t"
+          >
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="relative flex px-4 flex-col pb-4 gap-2" id="modalContent">
+            <h1 class="text-2xl text-center pb-4" id="spinText">Spinning...</h1>
+            <div id="pointer"></div>
+            <div
+              class="min-h-[50px] marquee pb-4 max-w-[250px] mx-auto"
+              id="roulette"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Instructions-->
+    <div
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
+      id="instruction"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div
+        class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
+        role="document"
+      >
+        <div
+          class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg"
+        >
+          <div
+            class="flex items-start justify-end p-4 pb-0 border-gray-300 rounded-t"
+          >
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="relative flex px-4 flex-col pb-4">
+            <div>Paging <span id="name">Camper</span>, This is mission control.</div>
+            <div class="text-justify">You are now entering The Singularity! The Special Organisms Centre has been overrun by unidentified organisms from space, terrorizing humans and animals alike. Reports have shown that it affects humans with a mental decay that causes feelings of dread and unfamiliarity with their surroundings. Some have been contained in the Enterprise of Experimental Entities, but those at the Special Organisms Centre are running loose! </div>
+            <u class="self-center"><b>Mission Objectives</b></u>
+            <ol class="list-decimal px-5">
+              <li>Visit Enterprise of Experimental Entities and ensure that all the creatures are in their containment unit</li>
+              <li>Visit Special Organisms Centre and collect Element Rings to make your way to the Decontamination Chamber</li>
+            </ol>
+            <!-- <img
+              src="https://media.discordapp.net/attachments/840592860310929449/1087038429092646923/image-removebg-preview.png"
+            /> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- scanQR -->
+    <div
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
+      id="scanQR"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div
+        class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
+        role="document"
+      >
+        <div
+          class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg"
+        >
+          <div
+            class="flex items-start justify-end p-4 border-gray-300 rounded-t"
+          >
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="relative flex px-4 flex-col pb-4 gap-2">
+            <div id="video-container" class="aspect-[4/3] w-full">
+              <video id="qr-video" class="w-full h-full object-cover"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function getAbsoluteHeight(el) {
+        // Get the DOM Node if you pass in a string
+        el = typeof el === "string" ? document.querySelector(el) : el;
 
-      return Math.ceil(el.offsetHeight + margin);
-    }
-    var heightSum = 0;
-    for (var ele of document.querySelectorAll(".measure")) {
-      heightSum += getAbsoluteHeight(ele);
-    }
-    document.getElementById("main").style.height =
-      getAbsoluteHeight(document.body) - heightSum + `px`;
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-    crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!--Login Check-->
-  <script>
-    const baseURL = window.location.href.split("/").slice(0, 3).join("/");
-    if (localStorage.getItem("userData") == undefined) {
-      window.location.href = `${baseURL}/login`;
-    }
-    if (sessionStorage.getItem("firstTime") == "true") {
-      document.getElementById("name").innerText = JSON.parse(
-        localStorage.getItem("userData")
-      ).name;
-      $("#instruction").modal("show");
-      sessionStorage.setItem("firstTime", false);
-    }
-  </script>
-  <!--Map-->
-  <script>
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoidWx0cmFyYXB0b3IiLCJhIjoiY2t0cGo5aThxMGFxMzJybXBiNmZ3bWY4eSJ9.q24IUWxYYm6DhTDn5pY2Rg";
-    const map = new mapboxgl.Map({
-      container: "map",
-      // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-      style: "mapbox://styles/mapbox/dark-v10?optimize=true",
-      zoom: 18,
-    });
-    map.on("load", () => {
-      // map["scrollZoom"].disable();
-      // map["dragPan"].disable();
-      // map["dragRotate"].disable();
-      // map["touchZoomRotate"].disable();
-      // map["doubleClickZoom"].disable();
-      // map["boxZoom"].disable();
-      // var EEE_start = new mapboxgl.Marker(player, { anchor: "bottom" })
-      //   .setLngLat([lng, lat])
-      //   .addTo(map);
-    });
-    navigator.geolocation.watchPosition(
-      function (position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        var heading = position.coords.heading;
-        var speed = position.coords.speed; // Metre per Second
-        var accuracy = position.coords.accuracy;
-        // Update the map's view to center on the user's location
-        map.setCenter([lng, lat]);
+        var styles = window.getComputedStyle(el);
+        var margin =
+          parseFloat(styles["marginTop"]) + parseFloat(styles["marginBottom"]);
 
-        // Display the user's location and direction on the map
-        const player = document.createElement("div");
-        player.style.backgroundImage = `url(https://media.discordapp.net/attachments/840592860310929449/1087381144145760337/Untitled-2.png)`;
-        player.id = `playerChar`;
-        player.style.minWidth = `20px`;
-        player.style.maxWidth = `75px`;
-        player.style.width = `15vw`;
-        player.style.aspectRatio = `1`;
-        player.style.backgroundSize = `100%`;
-        player.style.zIndex = `99`;
-        if (document.querySelectorAll("#playerChar").length >= 1) {
-          document.querySelectorAll("#playerChar")[0].remove();
-        }
-        var marker = new mapboxgl.Marker(player, { anchor: "bottom" })
-          .setLngLat([lng, lat])
-          .addTo(map);
-        marker.setRotation(heading);
-        map.setBearing(heading);
-      },
-      (err) => {
-        console.error(`ERROR(${err.code}): ${err.message}`);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
+        return Math.ceil(el.offsetHeight + margin);
       }
-    );
-  </script>
-  <!--QR Reader-->
-  <script type="module">
-    import QrScanner from "./js/qr-scanner.min.js";
+      var heightSum = 0;
+      for (var ele of document.querySelectorAll(".measure")) {
+        heightSum += getAbsoluteHeight(ele);
+      }
+      // document.getElementById("main").style.height =
+      //   getAbsoluteHeight(document.body) - heightSum + `px`;
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--Login Check-->
+    <script>
+      const baseURL = window.location.href.split("/").slice(0, 3).join("/");
+      if (localStorage.getItem("userData") == undefined) {
+        window.location.href = `${baseURL}/login`;
+      }
+      if (sessionStorage.getItem("firstTime") == "true") {
+        $("#instruction").modal("show");
+        sessionStorage.setItem("firstTime", false);
+      }
+      $("#instruction").on("shown.bs.modal", function (e) {
+        document.getElementById("name").innerText = JSON.parse(
+          localStorage.getItem("userData")
+        ).name;
+      });
+    </script>
+    <!--Map-->
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoidWx0cmFyYXB0b3IiLCJhIjoiY2t0cGo5aThxMGFxMzJybXBiNmZ3bWY4eSJ9.q24IUWxYYm6DhTDn5pY2Rg";
+      const map = new mapboxgl.Map({
+        container: "map",
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: "mapbox://styles/mapbox/dark-v10?optimize=true",
+        zoom: 19,
+      });
+      map.on("load", () => {
+        // map["scrollZoom"].disable();
+        // map["dragPan"].disable();
+        // map["dragRotate"].disable();
+        // map["touchZoomRotate"].disable();
+        // map["doubleClickZoom"].disable();
+        // map["boxZoom"].disable();
+        // var EEE_start = new mapboxgl.Marker(player, { anchor: "bottom" })
+        //   .setLngLat([lng, lat])
+        //   .addTo(map);
+      });
+      navigator.geolocation.watchPosition(
+        function (position) {
+          var lat = position.coords.latitude;
+          var lng = position.coords.longitude;
+          var heading = position.coords.heading;
+          var speed = position.coords.speed; // Metre per Second
+          var accuracy = position.coords.accuracy;
+          // Update the map's view to center on the user's location
+          map.setCenter([lng, lat]);
 
-    const video = document.getElementById("qr-video");
-    const videoContainer = document.getElementById("video-container");
+          // Display the user's location and direction on the map
+          const player = document.createElement("div");
+          player.style.backgroundImage = `url(https://media.discordapp.net/attachments/840592860310929449/1087381144145760337/Untitled-2.png)`;
+          player.id = `playerChar`;
+          player.style.minWidth = `20px`;
+          player.style.maxWidth = `75px`;
+          player.style.width = `15vw`;
+          player.style.aspectRatio = `1`;
+          player.style.backgroundSize = `100%`;
+          player.style.zIndex = `99`;
+          if (document.querySelectorAll("#playerChar").length >= 1) {
+            document.querySelectorAll("#playerChar")[0].remove();
+          }
+          var marker = new mapboxgl.Marker(player, { anchor: "bottom" })
+            .setLngLat([lng, lat])
+            .addTo(map);
+          marker.setRotation(heading);
+          map.setBearing(heading);
+        },
+        (err) => {
+          console.error(`ERROR(${err.code}): ${err.message}`);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+    </script>
+    <!--QR Reader-->
+    <script type="module">
+      import QrScanner from "./js/qr-scanner.min.js";
 
-    function setResult(result) {
-      $("#results").modal("hide");
-      $("#scanQR").modal("hide");
-      window.location.href = result.data;
-    }
+      const video = document.getElementById("qr-video");
+      const videoContainer = document.getElementById("video-container");
 
-    // ####### Web Cam Scanning #######
+      function setResult(result) {
+        $("#results").modal("hide");
+        $("#scanQR").modal("hide");
+        window.location.href = result.data;
+      }
 
-    const scanner = new QrScanner(video, (result) => setResult(result), {
-      highlightScanRegion: true,
-      highlightCodeOutline: true,
-    });
+      // ####### Web Cam Scanning #######
 
-    window.scanner = scanner;
+      const scanner = new QrScanner(video, (result) => setResult(result), {
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+      });
 
-    $("#scanQR").on("shown.bs.modal", function (e) {
-      scanner.start();
-    });
+      window.scanner = scanner;
 
-    $("#scanQR").on("hidden.bs.modal", function (e) {
-      scanner.stop();
-    });
-  </script>
-  <!--Client Side Script-->
-  <script>
-    var urlArr = [
-      "abd37534c7d9a2efb9465de931cd7055ffdb8879563ae98078d6d6d5",
-      "c681e18b81edaf2b66dd22376734dba5992e362bc3f91ab225854c17",
-      "1053463d383dc1e87f06fff34b3c6a2d340d91e184d46d70144ffa5a",
-      "06c9f71496e24dec6acc44895648cf9ec40b5cebb7bc4858a3c69f25",
-      "d5070e2f67ededca022f81f2941900606b16f3196b2268e856295f59",
-      "d4bf0e3ad56b3494897f5f0a1ce7b300e7dc8d838d1a384ce121bf7a",
-      "61246db30c51c3fe46779bcfc01eb6b3d2dee9d77d6837024134d8a9",
-      "e0ccaeadfef916630c35576679e4cd4b438e7fc95a60b7361705f708",
-      "9d4e0997db72e9c1d02a39b8fb969f508a0f65e5303118de9e037a02",
-      "fcd074cdd4c6e02b5dbe28f33858f8ed6d3e9e5ca5ff873f07371f3f",
-      "5006bab5782456808d60bddfa64db2d13d90b2c5550ba1ff2b2acad7",
-      "2e0cc996fafd71bfabc0717628bd3296306b078910b68f081f3d3fcc",
-      "4fde0463771d8c4fb82794d5d6d003725c819dd34360e7bf9c70cffe",
-      "73363bb5e0e56db01ad3853166fa945628d165930473b5ee5608edeb",
-      "cbb625b441474e8dd944e43632d9112c7e4213cce5410b5b3ce59f56",
-      "e22bd066f428b7a77a1b936f99c1f4c117b856705d8f90379579f1e9",
-      "8acd70840f1928a2a80c548d7599a07e752a6804612469d1dabac68a",
-      "90ffc2300bfbe8fbdddb57bc85db44fd0217b079b14e729e9ac98227",
-      "0dd8c67786f88335c6caf127b82032f47633948703d7f3dfd9d61fc0",
-      "991a908ad5fc70a65e7d36714f4d2088809a8842c89d56dd421fcb45",
-      "df4e71601e2a93f5d17e9599f25acd249f3fb20cf57ed8e1d56aba76",
-      "5e4165a6124f2afc058d013b360ff4444fe16e69048092a4f635caea",
-      "54a2f7f92a5f975d8096af77a126edda7da60c5aa872ef1b871701ae",
-      "518d3dd9f8f74ecc34ed7d6ce4310b5fbab8f222b1006ffaf6ea0c43",
-      "2c89060719a95c7cb741f04e36835430436840e3052273676c6c1a99",
-      "5cfe2cddbb9940fb4d8505e25ea77e763a0077693dbb01b1a6aa94f2",
-      "d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f",
-      "484d52691fcadbfabec5a318d1cf9692c7f293cbc8c1d5f22b2d839b",
-      "7497e88b8c64062edfb2f30b9c5f845552b841d1fbae97ab3f224f74",
-      "5b1cfa35e55802f5bcd92750b9f1441d63ddeabba543f9f7d87d8fb3",
-      "02f7a0298bd2ac3c3137a53a07c82ef4f3c0ed66c1aefd04b7b84df8",
-      "85f17f3cca77dc064e1111a73d02552b70aa1c36fed440c978e14bc9",
-      "7e27c59a202f5e2b2b3b5458300140ef7aa7edc3a97a605b788546a1",
-      "ef184d8975e8aa87ba5f2500ecd910180558c865029f92a85fb2c73d",
-      "b33236e4dd7aec12d1895480cdbec351586f18b3745679a12b7eacfa",
-      "358223f683592f32c35f2678fac433704728a2bf06d5737aec8dde7b",
-      "47c610004849d61c865c72bb64e82d83a5d1cdd7b6c5ca28cb1612bc",
-      "95b55c1004f725be3e353e4c231b6905ab662af7bb31032856b087e7",
-      "99c9625f6bcdc158d4fecdde3563eaad1f87b19a1e30fc1c180bc942",
-      "90df76dd1bcc659ed8aaac1332105a825294b31d6b175e31d7fc78c9",
-      "271cec0cfa54360567069fd3b545a5f7085a81f496ae9139b10aeb75",
-      "7518962a0ac1909fa5f33e1da0c759da3dcea0158db1c72783f0dd5f",
-      "aa2c1829f58f0b85a1bc4ede83112ce4b7ed71a83e3d549e279d23d0",
-      "2a02fbcc0987071ad700b0cd15acae0dffcac644117d0522f4d07be0",
-      "3036a47f4a98aa71b4638eb3ec1a343bbdec68f2ce0cf1c247a69a0c",
-      "b8a749de2f3dd84fd1f82796271b76a41c6567c2181df0e465421a9b",
-      "9791fde696023fceafb9f1456a710297fd61dc4161f56cb877215680",
-      "e17336dbdccdf836f7a3cb5b01151cdea33183bfe1677094e1807915",
-      "f00bdeb2cd9da240a57c951fdf1bcba509fd0cd83c5e5ad9a669de12",
-      "b12ba16a92bb4260f0b011d89573a3273ab52d7213e8e1d2183260e8",
-      "5cfe2cddbb9940fb4d8505e25ea77e763a0077693dbb01b1a6aa94f2",
-      "a8dfe9873e71c1e2c2ff4decd814264d9a27693d0180e479dffaea4f",
-      "e495146b841a91df32daa714325a4eaa4ce43e1b517e50e49f6707da",
-      "b878830c88e4372204be0ac53781507936279ee68c38c9bf14f7cca0",
-      "199ca440800489f6f24fbb1b37c76ae58dce7ec57d7b251e06566682"
-    ];
+      $("#scanQR").on("shown.bs.modal", function (e) {
+        scanner.start();
+      });
 
-    var progressLink = [
-      "e75169589b9641e78815bbf02b5dd5ae87b1f38f93f46aa979f44ee1",
-      "2a5d9639c7dc16c6765a02f0800bbc13fad574ae882962e36af428fe",
-      "06b38eae6e3def5ec4a663099b86e22fe95577e00af55ff931e9e6b6",
-      "d95819df3ba623fec705baf34f0f33b1c7bd366e5ed595d2dc1eb972",
-    ];
-    if (localStorage.getItem("colorDict") == undefined) {
-      var colorArr = [
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G",
-        "Y",
-        "W",
-        "W",
-        "W",
-        "W",
-        "M",
-        "M",
-        "M",
-        "M",
-        "M",
-        "M",
-        "W",
-        "R",
-        "B",
-        "G",
-        "Y",
+      $("#scanQR").on("hidden.bs.modal", function (e) {
+        scanner.stop();
+      });
+    </script>
+    <!--Client Side Script-->
+    <script>
+      var urlArr = [
+        "abd37534c7d9a2efb9465de931cd7055ffdb8879563ae98078d6d6d5",
+        "c681e18b81edaf2b66dd22376734dba5992e362bc3f91ab225854c17",
+        "1053463d383dc1e87f06fff34b3c6a2d340d91e184d46d70144ffa5a",
+        "06c9f71496e24dec6acc44895648cf9ec40b5cebb7bc4858a3c69f25",
+        "d5070e2f67ededca022f81f2941900606b16f3196b2268e856295f59",
+        "d4bf0e3ad56b3494897f5f0a1ce7b300e7dc8d838d1a384ce121bf7a",
+        "61246db30c51c3fe46779bcfc01eb6b3d2dee9d77d6837024134d8a9",
+        "e0ccaeadfef916630c35576679e4cd4b438e7fc95a60b7361705f708",
+        "9d4e0997db72e9c1d02a39b8fb969f508a0f65e5303118de9e037a02",
+        "fcd074cdd4c6e02b5dbe28f33858f8ed6d3e9e5ca5ff873f07371f3f",
+        "5006bab5782456808d60bddfa64db2d13d90b2c5550ba1ff2b2acad7",
+        "2e0cc996fafd71bfabc0717628bd3296306b078910b68f081f3d3fcc",
+        "4fde0463771d8c4fb82794d5d6d003725c819dd34360e7bf9c70cffe",
+        "73363bb5e0e56db01ad3853166fa945628d165930473b5ee5608edeb",
+        "cbb625b441474e8dd944e43632d9112c7e4213cce5410b5b3ce59f56",
+        "e22bd066f428b7a77a1b936f99c1f4c117b856705d8f90379579f1e9",
+        "8acd70840f1928a2a80c548d7599a07e752a6804612469d1dabac68a",
+        "90ffc2300bfbe8fbdddb57bc85db44fd0217b079b14e729e9ac98227",
+        "0dd8c67786f88335c6caf127b82032f47633948703d7f3dfd9d61fc0",
+        "991a908ad5fc70a65e7d36714f4d2088809a8842c89d56dd421fcb45",
+        "df4e71601e2a93f5d17e9599f25acd249f3fb20cf57ed8e1d56aba76",
+        "5e4165a6124f2afc058d013b360ff4444fe16e69048092a4f635caea",
+        "54a2f7f92a5f975d8096af77a126edda7da60c5aa872ef1b871701ae",
+        "518d3dd9f8f74ecc34ed7d6ce4310b5fbab8f222b1006ffaf6ea0c43",
+        "2c89060719a95c7cb741f04e36835430436840e3052273676c6c1a99",
+        "5cfe2cddbb9940fb4d8505e25ea77e763a0077693dbb01b1a6aa94f2",
+        "d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f",
+        "484d52691fcadbfabec5a318d1cf9692c7f293cbc8c1d5f22b2d839b",
+        "7497e88b8c64062edfb2f30b9c5f845552b841d1fbae97ab3f224f74",
+        "5b1cfa35e55802f5bcd92750b9f1441d63ddeabba543f9f7d87d8fb3",
+        "02f7a0298bd2ac3c3137a53a07c82ef4f3c0ed66c1aefd04b7b84df8",
+        "85f17f3cca77dc064e1111a73d02552b70aa1c36fed440c978e14bc9",
+        "7e27c59a202f5e2b2b3b5458300140ef7aa7edc3a97a605b788546a1",
+        "ef184d8975e8aa87ba5f2500ecd910180558c865029f92a85fb2c73d",
+        "b33236e4dd7aec12d1895480cdbec351586f18b3745679a12b7eacfa",
+        "358223f683592f32c35f2678fac433704728a2bf06d5737aec8dde7b",
+        "47c610004849d61c865c72bb64e82d83a5d1cdd7b6c5ca28cb1612bc",
+        "95b55c1004f725be3e353e4c231b6905ab662af7bb31032856b087e7",
+        "99c9625f6bcdc158d4fecdde3563eaad1f87b19a1e30fc1c180bc942",
+        "90df76dd1bcc659ed8aaac1332105a825294b31d6b175e31d7fc78c9",
+        "271cec0cfa54360567069fd3b545a5f7085a81f496ae9139b10aeb75",
+        "7518962a0ac1909fa5f33e1da0c759da3dcea0158db1c72783f0dd5f",
+        "aa2c1829f58f0b85a1bc4ede83112ce4b7ed71a83e3d549e279d23d0",
+        "2a02fbcc0987071ad700b0cd15acae0dffcac644117d0522f4d07be0",
+        "3036a47f4a98aa71b4638eb3ec1a343bbdec68f2ce0cf1c247a69a0c",
+        "b8a749de2f3dd84fd1f82796271b76a41c6567c2181df0e465421a9b",
+        "9791fde696023fceafb9f1456a710297fd61dc4161f56cb877215680",
+        "e17336dbdccdf836f7a3cb5b01151cdea33183bfe1677094e1807915",
+        "f00bdeb2cd9da240a57c951fdf1bcba509fd0cd83c5e5ad9a669de12",
+        "b12ba16a92bb4260f0b011d89573a3273ab52d7213e8e1d2183260e8",
+        "5cfe2cddbb9940fb4d8505e25ea77e763a0077693dbb01b1a6aa94f2",
+        "a8dfe9873e71c1e2c2ff4decd814264d9a27693d0180e479dffaea4f",
+        "e495146b841a91df32daa714325a4eaa4ce43e1b517e50e49f6707da",
+        "b878830c88e4372204be0ac53781507936279ee68c38c9bf14f7cca0",
+        "199ca440800489f6f24fbb1b37c76ae58dce7ec57d7b251e06566682",
       ];
 
-      shuffleArr(colorArr);
-      shuffleArr(urlArr);
-      var colorDict = {};
-      for (var index in urlArr) {
-        colorDict[urlArr[index]] = colorArr[index];
-      }
-      axios
-        .post(`${baseURL}/update`, {
-          links: colorDict,
-          userID: JSON.parse(localStorage.getItem("userData")).id,
-        })
-        .then((response) => {
-          localStorage.setItem("colorDict", JSON.stringify(colorDict));
-          localStorage.setItem("userData", JSON.stringify(response.data[0]));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    function shuffleArr(array) {
-      let currentIndex = array.length,
-        randomIndex;
-
-      // While there remain elements to shuffle.
-      while (currentIndex != 0) {
-        // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-          array[randomIndex],
-          array[currentIndex],
+      var progressLink = [
+        "e75169589b9641e78815bbf02b5dd5ae87b1f38f93f46aa979f44ee1",
+        "2a5d9639c7dc16c6765a02f0800bbc13fad574ae882962e36af428fe",
+        "06b38eae6e3def5ec4a663099b86e22fe95577e00af55ff931e9e6b6",
+        "d95819df3ba623fec705baf34f0f33b1c7bd366e5ed595d2dc1eb972",
+      ];
+      if (localStorage.getItem("colorDict") == undefined) {
+        var colorArr = [
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "R",
+          "B",
+          "G",
+          "Y",
+          "W",
+          "W",
+          "W",
+          "W",
+          "M",
+          "M",
+          "M",
+          "M",
+          "M",
+          "M",
+          "W",
+          "R",
+          "B",
+          "G",
+          "Y",
         ];
-      }
 
-      return array;
-    }
-  </script>
-  <!-- Scan Check -->
-  <script>
-    var blockDict = {
-      R: "bg-red-500",
-      Y: "bg-amber-500",
-      G: "bg-green-500",
-      B: "bg-blue-500",
-      W: "bg-white",
-      M: "bg-zinc-700",
-    };
-    var urlLink = window.location.href.split("/");
-    var QR;
-    if (urlLink.length > 4) {
-      var isInLink = false;
-      if (urlLink[urlLink.length - 2] == "qr") {
-        isInLink = urlArr.includes(urlLink[urlLink.length - 1]);
-      } else {
-        isInLink = progressLink.includes(urlLink[urlLink.length - 1]);
-      }
-      if (isInLink) {
+        shuffleArr(colorArr);
+        shuffleArr(urlArr);
+        var colorDict = {};
+        for (var index in urlArr) {
+          colorDict[urlArr[index]] = colorArr[index];
+        }
         axios
-          .post(window.location.href, {
+          .post(`${baseURL}/update`, {
+            links: colorDict,
             userID: JSON.parse(localStorage.getItem("userData")).id,
           })
           .then((response) => {
-            if (JSON.parse(response.data).message == "QR") {
-              QR = urlLink[urlLink.length - 1];
-              var colorDict = JSON.parse(localStorage.getItem("colorDict"));
-              var rouletteArr = [
-                "R",
-                "R",
-                "R",
-                "R",
-                "Y",
-                "Y",
-                "Y",
-                "Y",
-                "G",
-                "G",
-                "G",
-                "G",
-                "B",
-                "B",
-                "B",
-                "B",
-                "M",
-                "M",
-                "W",
-              ];
-              var marqueeContent = `<ul class="marquee__content">`;
-              var tempArr = [...shuffleArr(rouletteArr)];
-              tempArr.splice(2, 0, colorDict[QR]);
-              for (var c of tempArr) {
-                marqueeContent += `
+            localStorage.setItem("colorDict", JSON.stringify(colorDict));
+            localStorage.setItem("userData", JSON.stringify(response.data[0]));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      function shuffleArr(array) {
+        let currentIndex = array.length,
+          randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+          // Pick a remaining element.
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+
+          // And swap it with the current element.
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex],
+            array[currentIndex],
+          ];
+        }
+
+        return array;
+      }
+    </script>
+    <!-- Scan Check -->
+    <script>
+      var blockDict = {
+        R: "bg-red-500",
+        Y: "bg-amber-500",
+        G: "bg-green-500",
+        B: "bg-blue-500",
+        W: "bg-white",
+        M: "bg-zinc-700",
+      };
+      var urlLink = window.location.href.split("/");
+      var QR;
+      if (urlLink.length > 4) {
+        var isInLink = false;
+        if (urlLink[urlLink.length - 2] == "qr") {
+          isInLink = urlArr.includes(urlLink[urlLink.length - 1]);
+        } else {
+          isInLink = progressLink.includes(urlLink[urlLink.length - 1]);
+        }
+        if (isInLink) {
+          axios
+            .post(window.location.href, {
+              userID: JSON.parse(localStorage.getItem("userData")).id,
+            })
+            .then((response) => {
+              if (JSON.parse(response.data).message == "QR") {
+                QR = urlLink[urlLink.length - 1];
+                var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+                var rouletteArr = [
+                  "R",
+                  "R",
+                  "R",
+                  "R",
+                  "Y",
+                  "Y",
+                  "Y",
+                  "Y",
+                  "G",
+                  "G",
+                  "G",
+                  "G",
+                  "B",
+                  "B",
+                  "B",
+                  "B",
+                  "M",
+                  "M",
+                  "W",
+                ];
+                var marqueeContent = `<ul class="marquee__content">`;
+                var tempArr = [...shuffleArr(rouletteArr)];
+                tempArr.splice(2, 0, colorDict[QR]);
+                for (var c of tempArr) {
+                  marqueeContent += `
                   <li class="marquee__item">
                     <div  
                       class="aspect-square ${blockDict[c]} w-[50px] min-w-[50px] border border-2 border-white"
                     ></div>
                   </li> 
                   `;
+                }
+                marqueeContent += "</ul>";
+                document.getElementById("roulette").innerHTML =
+                  marqueeContent + marqueeContent;
+                return $("#results").modal("show");
+              } else {
               }
-              marqueeContent += "</ul>";
-              document.getElementById("roulette").innerHTML =
-                marqueeContent + marqueeContent;
-              return $("#results").modal("show");
-            } else {
-            }
-            window.location.href = "/";
-          })
-          .catch((error) => {
-            if (error.response.status == 500) {
-              alert("QR Code has been already scanned");
               window.location.href = "/";
-            }
-            console.log(error);
-          });
-      } else {
-        alert("Invalid QR Code");
-        window.location.href = "/";
+            })
+            .catch((error) => {
+              if (error.response.status == 500) {
+                alert("QR Code has been already scanned");
+                window.location.href = "/";
+              }
+              console.log(error);
+            });
+        } else {
+          alert("Invalid QR Code");
+          window.location.href = "/";
+        }
       }
-    }
-  </script>
-  <!--Randomized-->
-  <script>
-    $("#results").on("shown.bs.modal", function (e) {
-      var resultDict = {
-        R: "Red",
-        Y: "Yellow",
-        G: "Green",
-        B: "Blue",
-        W: "Wild",
-        M: "Penalty",
-      };
-      var colorDict = JSON.parse(localStorage.getItem("colorDict"));
-      document
-        .querySelectorAll(".marquee__content")[1]
-        .addEventListener("animationend", () => {
-          var qrDict = JSON.parse(localStorage.getItem("QR"));
-          document.getElementById("spinText").innerText = `You got ${resultDict[colorDict[QR]]
+    </script>
+    <!--Randomized-->
+    <script>
+      $("#results").on("shown.bs.modal", function (e) {
+        var resultDict = {
+          R: "Red",
+          Y: "Yellow",
+          G: "Green",
+          B: "Blue",
+          W: "Wild",
+          M: "Penalty",
+        };
+        var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+        document
+          .querySelectorAll(".marquee__content")[1]
+          .addEventListener("animationend", () => {
+            var qrDict = JSON.parse(localStorage.getItem("QR"));
+            document.getElementById("spinText").innerText = `You got ${
+              resultDict[colorDict[QR]]
             }`;
-          if (Object.keys(qrDict).includes(colorDict[QR])) {
-            qrDict[colorDict[QR]]++;
-            axios
-              .post(
-                `${baseURL}/${JSON.parse(localStorage.getItem("userData")).id
-                }/SOCC`,
-                {
-                  qr: JSON.stringify(qrDict),
-                }
-              )
-              .then((response) => {
-                var colorDict = JSON.parse(localStorage.getItem("colorDict"));
-                var idDict = {
-                  R: "red",
-                  Y: "yellow",
-                  G: "green",
-                  B: "blue",
-                };
-                for (var [key, value] of Object.entries(
-                  JSON.parse(response.data.qr)
-                )) {
-                  document.getElementById(idDict[key]).innerText = value;
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          } else if (colorDict[QR] == "W") {
-            document.getElementById("modalContent").innerHTML = `
+            if (Object.keys(qrDict).includes(colorDict[QR])) {
+              qrDict[colorDict[QR]]++;
+              axios
+                .post(
+                  `${baseURL}/${
+                    JSON.parse(localStorage.getItem("userData")).id
+                  }/SOCC`,
+                  {
+                    qr: JSON.stringify(qrDict),
+                  }
+                )
+                .then((response) => {
+                  var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+                  var idDict = {
+                    R: "red",
+                    Y: "yellow",
+                    G: "green",
+                    B: "blue",
+                  };
+                  for (var [key, value] of Object.entries(
+                    JSON.parse(response.data.qr)
+                  )) {
+                    document.getElementById(idDict[key]).innerText = value;
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            } else if (colorDict[QR] == "W") {
+              document.getElementById("modalContent").innerHTML = `
               <h1 class="text-2xl text-center pb-4" id="spinText">Wild Card!</h1>
               <div class="grid grid-cols-2 grid-rows-2 w-1/2 mx-auto items-stretch pb-4">
                 <button class="aspect-square bg-red-500 w-full min-w-[50px]" onclick="updateScore('R')"></button>  
@@ -833,58 +915,94 @@
                 <button class="aspect-square bg-blue-500 w-full min-w-[50px]" onclick="updateScore('B')"></button>  
               </div>
               `;
-          } else {
-            const sortedArray = Object.entries(qrDict).sort(
-              (a, b) => b[1] - a[1]
-            );
-            const sortedObj = Object.fromEntries(sortedArray);
-            var temp = qrDict[Object.keys(sortedObj)[0]];
-            temp--;
-            if (temp >= 0) {
-              qrDict[Object.keys(sortedObj)[0]]--;
+            } else {
+              const sortedArray = Object.entries(qrDict).sort(
+                (a, b) => b[1] - a[1]
+              );
+              const sortedObj = Object.fromEntries(sortedArray);
+              var temp = qrDict[Object.keys(sortedObj)[0]];
+              temp--;
+              if (temp >= 0) {
+                qrDict[Object.keys(sortedObj)[0]]--;
+              }
+              axios
+                .post(
+                  `${baseURL}/${
+                    JSON.parse(localStorage.getItem("userData")).id
+                  }/SOCC`,
+                  {
+                    qr: JSON.stringify(qrDict),
+                  }
+                )
+                .then((response) => {
+                  var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+                  var idDict = {
+                    R: "red",
+                    Y: "yellow",
+                    G: "green",
+                    B: "blue",
+                  };
+                  for (var [key, value] of Object.entries(
+                    JSON.parse(response.data.qr)
+                  )) {
+                    document.getElementById(idDict[key]).innerText = value;
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             }
-            axios
-              .post(
-                `${baseURL}/${JSON.parse(localStorage.getItem("userData")).id
-                }/SOCC`,
-                {
-                  qr: JSON.stringify(qrDict),
-                }
-              )
-              .then((response) => {
-                var colorDict = JSON.parse(localStorage.getItem("colorDict"));
-                var idDict = {
-                  R: "red",
-                  Y: "yellow",
-                  G: "green",
-                  B: "blue",
-                };
-                for (var [key, value] of Object.entries(
-                  JSON.parse(response.data.qr)
-                )) {
-                  document.getElementById(idDict[key]).innerText = value;
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          }
-        });
-      for (var content of document.querySelectorAll(".marquee__content")) {
-        content.classList.add("stop");
-      }
-    });
+          });
+        for (var content of document.querySelectorAll(".marquee__content")) {
+          content.classList.add("stop");
+        }
+      });
 
-    function updateScore(qrCode) {
-      var qrDict = JSON.parse(localStorage.getItem("QR"));
-      qrDict[qrCode]++;
+      function updateScore(qrCode) {
+        var qrDict = JSON.parse(localStorage.getItem("QR"));
+        qrDict[qrCode]++;
+        axios
+          .post(
+            `${baseURL}/${
+              JSON.parse(localStorage.getItem("userData")).id
+            }/SOCC`,
+            {
+              qr: JSON.stringify(qrDict),
+            }
+          )
+          .then((response) => {
+            var colorDict = JSON.parse(localStorage.getItem("colorDict"));
+            var idDict = {
+              R: "red",
+              Y: "yellow",
+              G: "green",
+              B: "blue",
+            };
+            for (var [key, value] of Object.entries(
+              JSON.parse(response.data.qr)
+            )) {
+              document.getElementById(idDict[key]).innerText = value;
+            }
+            window.location.href = "/";
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      $("#results").on("hidden.bs.modal", function (e) {
+        for (var content of document.querySelectorAll(".marquee__content")) {
+          content.classList.remove("stop");
+        }
+        document.getElementById("spinText").innerText = "Spinning...";
+        window.location.href = "/";
+      });
+    </script>
+    <!--Progress Update-->
+    <script>
       axios
-        .post(
-          `${baseURL}/${JSON.parse(localStorage.getItem("userData")).id
-          }/SOCC`,
-          {
-            qr: JSON.stringify(qrDict),
-          }
+        .get(
+          `${baseURL}/${JSON.parse(localStorage.getItem("userData")).id}/SOCC`
         )
         .then((response) => {
           var colorDict = JSON.parse(localStorage.getItem("colorDict"));
@@ -894,82 +1012,48 @@
             G: "green",
             B: "blue",
           };
+          var escape = false;
           for (var [key, value] of Object.entries(
             JSON.parse(response.data.qr)
           )) {
             document.getElementById(idDict[key]).innerText = value;
+            if (value >= 5) {
+              escape = true;
+            }
           }
-          window.location.href = "/";
+          localStorage.setItem("QR", response.data.qr);
+          if (escape) {
+            alert("Escape!");
+          }
         })
         .catch((error) => {
           console.log(error);
         });
-    }
-
-    $("#results").on("hidden.bs.modal", function (e) {
-      for (var content of document.querySelectorAll(".marquee__content")) {
-        content.classList.remove("stop");
-      }
-      document.getElementById("spinText").innerText = "Spinning...";
-      window.location.href = "/";
-    });
-  </script>
-  <!--Progress Update-->
-  <script>
-    axios
-      .get(
-        `${baseURL}/${JSON.parse(localStorage.getItem("userData")).id}/SOCC`
-      )
-      .then((response) => {
-        var colorDict = JSON.parse(localStorage.getItem("colorDict"));
-        var idDict = {
-          R: "red",
-          Y: "yellow",
-          G: "green",
-          B: "blue",
-        };
-        var escape = false;
-        for (var [key, value] of Object.entries(
-          JSON.parse(response.data.qr)
-        )) {
-          document.getElementById(idDict[key]).innerText = value;
-          if (value >= 5) {
-            escape = true;
-          }
-        }
-        localStorage.setItem("QR", response.data.qr);
-        if (escape) {
-          alert("Escape!");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    axios
-      .get(
-        `${baseURL}/progress/${JSON.parse(localStorage.getItem("userData")).id
-        }`
-      )
-      .then((response) => {
-        for (var progress of response.data) {
-          if (progress.route_name == "SOC") {
-            document.getElementById("SOCimg").classList.remove("opacity-0");
-            if (progress.exit_time == null) {
-              document.getElementById("SOCimg").classList.add("opacity-25");
-            }
-          } else {
-            document.getElementById("EEEimg").classList.remove("opacity-0");
-            if (progress.exit_time == null) {
-              document.getElementById("EEEimg").classList.add("opacity-25");
+      axios
+        .get(
+          `${baseURL}/progress/${
+            JSON.parse(localStorage.getItem("userData")).id
+          }`
+        )
+        .then((response) => {
+          for (var progress of response.data) {
+            if (progress.route_name == "SOC") {
+              document.getElementById("SOCimg").classList.remove("opacity-0");
+              if (progress.exit_time == null) {
+                document.getElementById("SOCimg").classList.add("opacity-25");
+              }
+            } else {
+              document.getElementById("EEEimg").classList.remove("opacity-0");
+              if (progress.exit_time == null) {
+                document.getElementById("EEEimg").classList.add("opacity-25");
+              }
             }
           }
-        }
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  </script>
-</body>
-
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    </script>
+  </body>
 </html>
