@@ -325,15 +325,21 @@
             <div><span id="red">0</span>/5</div>
           </div>
           <div class="flex items-center justify-center gap-2">
-            <div class="circle p-5 aspect-square bg-amber-500 rounded-full"></div>
+            <div
+              class="circle p-5 aspect-square bg-amber-500 rounded-full"
+            ></div>
             <div><span id="yellow">0</span>/5</div>
           </div>
           <div class="flex items-center justify-center gap-2">
-            <div class="circle p-5 aspect-square bg-green-500 rounded-full"></div>
+            <div
+              class="circle p-5 aspect-square bg-green-500 rounded-full"
+            ></div>
             <div><span id="green">0</span>/5</div>
           </div>
           <div class="flex items-center justify-center gap-2">
-            <div class="circle p-5 aspect-square bg-blue-500 rounded-full"></div>
+            <div
+              class="circle p-5 aspect-square bg-blue-500 rounded-full"
+            ></div>
             <div><span id="blue">0</span>/5</div>
           </div>
         </div>
@@ -342,13 +348,20 @@
       <div id="table">
         <table class="table-auto text-center">
           <thead class="stampHead">
-            <tr style="border-bottom: 1pt solid rgba(255, 255, 255, 0.5)" >
-              <th class="w-7/12 pb-3" style="color: #fdfdc9; letter-spacing: 0.1em">
+            <tr style="border-bottom: 1pt solid rgba(255, 255, 255, 0.5)">
+              <th
+                class="w-7/12 pb-3"
+                style="color: #fdfdc9; letter-spacing: 0.1em"
+              >
                 STATION
               </th>
               <th
                 class="w-5/12 min-w-[100px] pb-3"
-                style="color: #fdfdc9; letter-spacing: 0.1em;border-left: 1pt solid rgba(255, 255, 255, 0.5)"
+                style="
+                  color: #fdfdc9;
+                  letter-spacing: 0.1em;
+                  border-left: 1pt solid rgba(255, 255, 255, 0.5);
+                "
               >
                 STAMP
               </th>
@@ -357,20 +370,26 @@
           <tbody>
             <tr style="border-bottom: 1pt solid rgba(255, 255, 255, 0.5)">
               <td>The Serum Station</td>
-              <td class="p-3" style="border-left: 1pt solid rgba(255, 255, 255, 0.5)">
+              <td
+                class="p-3"
+                style="border-left: 1pt solid rgba(255, 255, 255, 0.5)"
+              >
                 <img
                   src="./img/stamp2.png"
-                  class="w-full aspect-square  max-w-[100px] max-h-[100px] opacity-0 mx-auto"
+                  class="w-full aspect-square max-w-[100px] max-h-[100px] opacity-0 mx-auto"
                   id="SOCimg"
                 />
               </td>
             </tr>
             <tr>
               <td>The Containment Unit</td>
-              <td class="p-3"  style="border-left: 1pt solid rgba(255, 255, 255, 0.5)">
+              <td
+                class="p-3"
+                style="border-left: 1pt solid rgba(255, 255, 255, 0.5)"
+              >
                 <img
                   src="./img/stamp1.png"
-                  class="w-full aspect-square  max-w-[100px] max-h-[100px] opacity-0 mx-auto"
+                  class="w-full aspect-square max-w-[100px] max-h-[100px] opacity-0 mx-auto"
                   id="EEEimg"
                 />
               </td>
@@ -433,17 +452,101 @@
               &times;
             </button>
           </div>
-          <div class="relative flex px-4 flex-col pb-4">
-            <div>Paging <span id="name">Camper</span>, This is mission control.</div>
-            <div class="text-justify">You are now entering The Singularity! The Special Organisms Centre has been overrun by unidentified organisms from space, terrorizing humans and animals alike. Reports have shown that it affects humans with a mental decay that causes feelings of dread and unfamiliarity with their surroundings. Some have been contained in the Enterprise of Experimental Entities, but those at the Special Organisms Centre are running loose! </div>
+          <div class="relative flex px-4 flex-col pb-4 md:gap-3">
+            <div>
+              Paging <span id="name">Camper</span>, This is mission control.
+            </div>
+            <div class="text-justify">
+              You are now entering The Singularity! The Special Organisms Centre
+              has been overrun by unidentified organisms from space, terrorizing
+              humans and animals alike. Reports have shown that it affects
+              humans with a mental decay that causes feelings of dread and
+              unfamiliarity with their surroundings. Some have been contained in
+              the Enterprise of Experimental Entities, but those at the Special
+              Organisms Centre are running loose!
+            </div>
             <u class="self-center"><b>Mission Objectives</b></u>
             <ol class="list-decimal px-5">
-              <li>Visit Enterprise of Experimental Entities and ensure that all the creatures are in their containment unit</li>
-              <li>Visit Special Organisms Centre and collect Element Rings to make your way to the Decontamination Chamber</li>
+              <li>
+                Visit Enterprise of Experimental Entities and ensure that all
+                the creatures are in their containment unit
+              </li>
+              <li>
+                Visit Special Organisms Centre and collect Component Keys to
+                make your way to the Decontamination Chamber
+              </li>
             </ol>
-            <!-- <img
-              src="https://media.discordapp.net/attachments/840592860310929449/1087038429092646923/image-removebg-preview.png"
-            /> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--EEEModal-->
+    <div
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
+      id="EEEModal"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div
+        class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
+        role="document"
+      >
+        <div
+          class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg"
+        >
+          <div
+            class="flex items-start justify-end p-4 pb-0 border-gray-300 rounded-t"
+          >
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="relative flex px-4 flex-col pb-4 md:gap-3">
+            <u class="self-center"><b>Mission 1</b></u>
+            <div class="text-justify">
+              Welcome to the Containment Unit for the Enterprise of Experimental
+              Entities. It has been some time since the last Warden has been
+              checking up on the place. The cells are still occupied, though the
+              locks may be brittle. Proceed with caution, and follow the glow
+              lights to the Exit!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--SOCModal-->
+    <div
+      class="modal hidden fixed top-0 left-0 w-full h-full outline-none fade z-[100]"
+      id="SOCModal"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div
+        class="modal-dialog relative w-auto pointer-events-none max-w-lg top-1/2 -translate-y-1/2 mx-auto px-4 sm:px-0"
+        role="document"
+      >
+        <div
+          class="relative flex flex-col mx-auto pointer-events-auto bg-zinc-900 border border-gray-600 rounded-lg"
+        >
+          <div
+            class="flex items-start justify-end p-4 pb-0 border-gray-300 rounded-t"
+          >
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="relative flex px-4 flex-col pb-4 md:gap-3">
+            <u class="self-center"><b>Mission 2</b></u>
+            <div class="text-justify">
+              The Special Organisms Centre has been contaminated with infected
+              airborne particles from the alien ship we found recently. You are
+              at risk of being infected as well! Find 5 Component Keys [QR Codes] of the
+              same colour and make your way to the Decontamination Chamber.
+              Collect Element Rings as they are currency in this institution.
+              The Marshals will help you if you are lost. Avoid the Gulchers!
+              They scavenge for Element Rings. Be careful, as some Component
+              Keys are among the Infected!
+            </div>            
           </div>
         </div>
       </div>
@@ -841,7 +944,10 @@
                 document.getElementById("roulette").innerHTML =
                   marqueeContent + marqueeContent;
                 return $("#results").modal("show");
-              } else {
+              } else if (JSON.parse(response.data).message == "SOC") {
+                $("#SOCModal").modal("show");
+              } else if (JSON.parse(response.data).message == "EEE") {
+                $("#EEEModal").modal("show");
               }
               window.location.href = "/";
             })
@@ -1023,7 +1129,9 @@
           }
           localStorage.setItem("QR", response.data.qr);
           if (escape) {
-            alert("Escape!");
+            alert(
+              "Head to the Decontamination Chamber [FC6 Beside Drink Stall]!"
+            );
           }
         })
         .catch((error) => {
