@@ -23,6 +23,10 @@
       crossorigin="anonymous"
     ></script>
     <style>
+      .mapboxgl-control-container {
+        opacity: 0;
+      }
+
       body {
         height: auto;
         padding-bottom: 5vh;
@@ -644,13 +648,62 @@
         // map["touchZoomRotate"].disable();
         // map["doubleClickZoom"].disable();
         // map["boxZoom"].disable();
-        var EEE_start = new mapboxgl.Marker({
+        var SOC_start = new mapboxgl.Marker({
           anchor: "bottom",
-          color: "#FFFFFF",
+          color: "#00FFFF",
           draggable: false,
         })
-          .setLngLat([103.7790275225191, 1.309673521280902])
+          .setLngLat([103.77622499046475, 1.3116065551731824])
           .addTo(map);
+
+        var EEE_start = new mapboxgl.Marker({
+          anchor: "bottom",
+          color: "#FF00FF",
+          draggable: false,
+        })
+          .setLngLat([103.77893076963113, 1.3096444881139377])
+          .addTo(map);
+
+        map.addLayer({
+          id: "text-layer",
+          type: "symbol",
+          source: {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: [
+                {
+                  type: "Feature",
+                  properties: {
+                    text: "EEE",
+                    color: "#FFFFFF",
+                  },
+                  geometry: {
+                    type: "Point",
+                    coordinates: [103.77893076963113, 1.3096444881139377],
+                  },
+                },
+                {
+                  type: "Feature",
+                  properties: {
+                    text: "SOC",
+                    color: "#FFFFFF",
+                  },
+                  geometry: {
+                    type: "Point",
+                    coordinates: [103.77622499046475, 1.3116065551731824],
+                  },
+                },
+              ],
+            },
+          },
+          layout: {
+            "text-field": ["get", "text"],
+            "text-size": 16,
+            "text-offset": [0, -1],
+            "text-anchor": "top",
+          },
+        });
       });
       navigator.geolocation.watchPosition(
         function (position) {
