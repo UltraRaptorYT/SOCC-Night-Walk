@@ -278,6 +278,31 @@ app.post("/:progress/:code", async (req, res) => {
 //   }
 // );
 
+app.post("/reset", async (req, res) => {
+  var { error } = await supabase
+    .from("SOCCQR")
+    .update({
+      qr: JSON.stringify({
+        R: 0,
+        Y: 0,
+        G: 0,
+        B: 0,
+      }),
+    })
+    .eq("userid", req.body.userID);
+  if (error) {
+    return res.status(500).json(error);
+  }
+  var { error } = await supabase
+    .from("SOCC")
+    .delete()
+    .eq("userid", req.body.userID);
+  if (error) {
+    return res.status(500).json(error);
+  }
+  return res.status(204).json();
+});
+
 app.listen(port, function () {
   console.log(`Server hosted at http://localhost:${port}`);
 });

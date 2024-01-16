@@ -293,7 +293,7 @@
       </h1>
     </header>
 
-    <div id="main" class="">
+    <div id="main" class="max-w-[500px] mx-auto">
       <div class="circleWrap">
         <button
           id="mission"
@@ -401,6 +401,16 @@
             </tr>
           </tbody>
         </table>
+        <div class="flex justify-center pt-6">
+          <button
+            type="button"
+            id="reset"
+            onclick="resetBtn()"
+            class="bg-red-500/50 w-1/2 text-center p-2 rounded-full font-semibold"
+          >
+            RESET PROGRESS
+          </button>
+        </div>
       </div>
     </div>
 
@@ -840,65 +850,101 @@
         "06b38eae6e3def5ec4a663099b86e22fe95577e00af55ff931e9e6b6",
         "d95819df3ba623fec705baf34f0f33b1c7bd366e5ed595d2dc1eb972",
       ];
-      if (localStorage.getItem("colorDict") == undefined) {
-        var colorArr = [
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "R",
-          "B",
-          "G",
-          "Y",
-          "W",
-          "W",
-          "W",
-          "W",
-          "M",
-          "M",
-          "M",
-          "M",
-          "M",
-          "M",
-          "W",
-          "R",
-          "B",
-          "G",
-          "Y",
-        ];
+      var colorArr = [
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "R",
+        "B",
+        "G",
+        "Y",
+        "W",
+        "W",
+        "W",
+        "W",
+        "M",
+        "M",
+        "M",
+        "M",
+        "M",
+        "M",
+        "W",
+        "R",
+        "B",
+        "G",
+        "Y",
+      ];
 
+      async function resetBtn() {
+        if (confirm("Are you sure you want to reset your progress")) {
+          shuffleArr(colorArr);
+          shuffleArr(urlArr);
+          var colorDict = {};
+          for (var index in urlArr) {
+            colorDict[urlArr[index]] = colorArr[index];
+          }
+          await axios
+            .post(`${baseURL}/update`, {
+              links: colorDict,
+              userID: JSON.parse(localStorage.getItem("userData")).id,
+            })
+            .then((response) => {
+              localStorage.setItem("colorDict", JSON.stringify(colorDict));
+              localStorage.setItem(
+                "userData",
+                JSON.stringify(response.data[0])
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          await axios
+            .post(`${baseURL}/reset`, {
+              userID: JSON.parse(localStorage.getItem("userData")).id,
+            })
+            .then((response) => {
+              window.location.reload();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      }
+
+      if (localStorage.getItem("colorDict") == undefined) {
         shuffleArr(colorArr);
         shuffleArr(urlArr);
         var colorDict = {};
@@ -1180,18 +1226,28 @@
             B: "blue",
           };
           var escape = false;
+          var escapeDict = {
+            R: false,
+            Y: false,
+            G: false,
+            B: false,
+          };
           for (var [key, value] of Object.entries(
             JSON.parse(response.data.qr)
           )) {
             document.getElementById(idDict[key]).innerText = value;
+            // Change Condition
             if (value >= 3) {
-              escape = true;
+              escapeDict[key] = true;
             }
+          }
+          if (Object.values(escapeDict).every((e) => e)) {
+            escape = true;
           }
           localStorage.setItem("QR", response.data.qr);
           if (escape) {
             alert(
-              "Head to the Decontamination Chamber [FC6 Beside Drink Stall]!"
+              "You’ve collected 3 of each colour! Show this to the GameMaster to verify completion!"
             );
           }
         })
