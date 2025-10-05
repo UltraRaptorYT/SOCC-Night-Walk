@@ -628,9 +628,10 @@
     <!--Login Check-->
     <script>
       const baseURL = window.location.href.split("/").slice(0, 3).join("/");
-      if (localStorage.getItem("userData") == undefined) {
-        window.location.href = `${baseURL}/login`;
-      }
+      // if (localStorage.getItem("userData") == undefined) {
+      //   window.location.href = `${baseURL}/login`;
+      // }
+      localStorage.setItem("userData", { id: "testID", name: "Hong Yu" });
       if (sessionStorage.getItem("firstTime") == "true") {
         $("#instruction").modal("show");
         sessionStorage.setItem("firstTime", false);
@@ -1039,10 +1040,10 @@
                 for (var c of tempArr) {
                   marqueeContent += `
                   <li class="marquee__item">
-                    <div  
+                    <div
                       class="aspect-square ${blockDict[c]} w-[50px] min-w-[50px] border border-2 border-white"
                     ></div>
-                  </li> 
+                  </li>
                   `;
                 }
                 marqueeContent += "</ul>";
@@ -1122,10 +1123,10 @@
               document.getElementById("modalContent").innerHTML = `
               <h1 class="text-2xl text-center pb-4" id="spinText">Wild Card!</h1>
               <div class="grid grid-cols-2 grid-rows-2 w-1/2 mx-auto items-stretch pb-4">
-                <button class="aspect-square bg-red-500 w-full min-w-[50px]" onclick="updateScore('R')"></button>  
-                <button class="aspect-square bg-amber-500 w-full min-w-[50px]" onclick="updateScore('Y')"></button>  
-                <button class="aspect-square bg-green-500 w-full min-w-[50px]" onclick="updateScore('G')"></button>  
-                <button class="aspect-square bg-blue-500 w-full min-w-[50px]" onclick="updateScore('B')"></button>  
+                <button class="aspect-square bg-red-500 w-full min-w-[50px]" onclick="updateScore('R')"></button>
+                <button class="aspect-square bg-amber-500 w-full min-w-[50px]" onclick="updateScore('Y')"></button>
+                <button class="aspect-square bg-green-500 w-full min-w-[50px]" onclick="updateScore('G')"></button>
+                <button class="aspect-square bg-blue-500 w-full min-w-[50px]" onclick="updateScore('B')"></button>
               </div>
               `;
             } else {
